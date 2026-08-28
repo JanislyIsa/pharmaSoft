@@ -47,7 +47,7 @@ public class ProductoServiceImpl implements ProductoService {
         }
 
         Producto producto = productoMapper.toEntity(t, categoria);
-        Producto creado = productoRepository.save(producto);
+        Producto creado = productoRepository.saveAndFlush(producto);
         LOG.info("Producto creado con id={}, estado={} (stock={}), categoria id={}",
                 creado.getId(), creado.getEstado(), creado.getStock(), categoria.getId());
         return productoMapper.toResponseDTO(creado);
@@ -69,7 +69,7 @@ public class ProductoServiceImpl implements ProductoService {
         }
 
         productoMapper.actualizarEntity(producto, t, categoria);
-        Producto actualizado = productoRepository.save(producto);
+        Producto actualizado = productoRepository.saveAndFlush(producto);
         LOG.info("Producto id={} actualizado, nuevo estado={} (stock={})",
                 actualizado.getId(), actualizado.getEstado(), actualizado.getStock());
         return productoMapper.toResponseDTO(actualizado);
