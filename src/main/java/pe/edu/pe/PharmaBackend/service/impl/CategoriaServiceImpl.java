@@ -1,6 +1,5 @@
 package pe.edu.pe.PharmaBackend.service.impl;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import pe.edu.pe.PharmaBackend.service.service.CategoriaService;
 
 import java.util.Optional;
 
-
 @Service
 public class CategoriaServiceImpl implements CategoriaService {
 
@@ -27,51 +25,54 @@ public class CategoriaServiceImpl implements CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
 
-
     @Override
     @Transactional
     public CategoriaResponseDTO create(CategoriaRequestDTO t) {
         String nombre = t.getNombre().trim();
         if (categoriaRepository.existsByNombreIgnoreCase(nombre)) {
-            throw new ReglaNegocioException("El nombre existe en el sistema"+ nombre);
+            throw new ReglaNegocioException("El nombre de categoría ya existe en el sistema: " + nombre);
         }
         Categoria categoria = new Categoria();
         categoria.setNombre(nombre);
         categoria.setDescripcion(t.getDescripcion());
         categoria.setEstado(t.getEstado());
         Categoria catCreada = categoriaRepository.save(categoria);
+        LOG.info("Categoria creada con id={}", catCreada.getId());
         return convertirResponse(catCreada);
     }
 
     @Override
     @Transactional
-    public CategoriaResponseDTO update(Long aLong, CategoriaRequestDTO t) {
-        Categoria categoria = categoriaRepository.findById(aLong).orElseThrow(()->new RecursoNoEncontradoException(
-                "Categoria no encontrada con el id: "+aLong
-            )
-        );
-        categoria.setNombre(t.getNombre());
+    public CategoriaResponseDTO update(Long id, CategoriaRequestDTO t) {
+        Categoria categoria = categoriaRepository.findById(id).orElseThrow(() ->
+                new RecursoNoEncontradoException("Categoria no encontrada con el id: " + id));
+
+        String nombre = t.getNombre().trim();
+        if (categoriaRepository.existsByNombreIgnoreCaseAndIdNot(nombre, id)) {
+            throw new ReglaNegocioException("El nombre de categoría ya existe en el sistema: " + nombre);
+        }
+
+        categoria.setNombre(nombre);
         categoria.setDescripcion(t.getDescripcion());
         categoria.setEstado(t.getEstado());
         Categoria catActualizada = categoriaRepository.save(categoria);
+        LOG.info("Categoria id={} actualizada", catActualizada.getId());
         return convertirResponse(catActualizada);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CategoriaResponseDTO> read(Long aLong) {
-        return categoriaRepository.findById(aLong).map(this::convertirResponse);
+    public Optional<CategoriaResponseDTO> read(Long id) {
+        return categoriaRepository.findById(id).map(this::convertirResponse);
     }
 
     @Override
     @Transactional
-    public void delete(Long aLong) {
-        Categoria categoria = categoriaRepository.findById(aLong).orElseThrow(()->
-                new RecursoNoEncontradoException(
-                "Categoria no encontrada con el id: "+aLong
-                )
-        );
-
+    public void delete(Long id) {
+        Categoria categoria = categoriaRepository.findById(id).orElseThrow(() ->
+                new RecursoNoEncontradoException("Categoria no encontrada con el id: " + id));
+        categoriaRepository.delete(categoria);
+        LOG.info("Categoria id={} eliminada", id);
     }
 
     @Override

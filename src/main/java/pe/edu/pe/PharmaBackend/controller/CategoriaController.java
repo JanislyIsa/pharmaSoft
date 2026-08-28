@@ -8,27 +8,26 @@ import pe.edu.pe.PharmaBackend.dto.CategoriaRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.CategoriaResponseDTO;
 import pe.edu.pe.PharmaBackend.service.service.CategoriaService;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/v1/categorias")
 public class CategoriaController {
+
     private final CategoriaService categoriaService;
 
     public CategoriaController(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
     }
 
-
     @GetMapping
     public ResponseEntity<Iterable<CategoriaResponseDTO>> findAll() {
         return ResponseEntity.ok(categoriaService.readAll());
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<CategoriaResponseDTO>> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(categoriaService.read(id));
+    public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long id) {
+        return categoriaService.read(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -38,13 +37,13 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoriaResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CategoriaRequestDTO requestDTO) {
-        CategoriaResponseDTO response = categoriaService.create(requestDTO);
+    public ResponseEntity<CategoriaResponseDTO> update(@PathVariable Long id,
+                                                       @Valid @RequestBody CategoriaRequestDTO requestDTO) {
         return ResponseEntity.ok(categoriaService.update(id, requestDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CategoriaResponseDTO> update(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoriaService.delete(id);
         return ResponseEntity.noContent().build();
     }
