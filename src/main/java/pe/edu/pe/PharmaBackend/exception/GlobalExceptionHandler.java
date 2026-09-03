@@ -1,53 +1,101 @@
 package pe.edu.pe.PharmaBackend.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
+
+import pe.edu.pe.PharmaBackend.exception.dto.ErrorResponseDTO;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
+    /*
+     * Recurso no encontrado
+     * HTTP 404
+     */
     @ExceptionHandler(RecursoNoEncontradoException.class)
-    public ResponseEntity<ErrorResponseDTO> handleRecursoNoEncontrado(RecursoNoEncontradoException ex, WebRequest request) {
-        LOG.warn("Recurso no encontrado: {}", ex.getMessage());
-        return construir(HttpStatus.NOT_FOUND, ex.getMessage(), request, null);
-    }
+    public ResponseEntity<ErrorResponseDTO> handleNotFound(
+            RecursoNoEncontradoException ex,
+            HttpServletRequest request) {
 
-    @ExceptionHandler(ReglaNegocioException.class)
-    public ResponseEntity<ErrorResponseDTO> handleReglaNegocio(ReglaNegocioException ex, WebRequest request) {
-        LOG.warn("Regla de negocio violada: {}", ex.getMessage());
-        return construir(HttpStatus.CONFLICT, ex.getMessage(), request, null);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidacion(MethodArgumentNotValidException ex, WebRequest request) {
-        List<String> detalles = ex.getBindingResult().getFieldErrors().stream()
-                .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                .toList();
-        LOG.warn("Error de validación: {}", detalles);
-        return construir(HttpStatus.BAD_REQUEST, "Datos de entrada inválidos", request, detalles);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleGeneral(Exception ex, WebRequest request) {
-        LOG.error("Error no controlado: {}", ex.getMessage(), ex);
-        return construir(HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrió un error interno en el servidor", request, null);
-    }
-
-    private ResponseEntity<ErrorResponseDTO> construir(HttpStatus status, String mensaje, WebRequest request, List<String> detalles) {
         ErrorResponseDTO error = new ErrorResponseDTO(
-                LocalDateTime.now(), status.value(), status.getReasonPhrase(),
-                mensaje, request.getDescription(false).replace("uri=", ""), detalles);
-        return ResponseEntity.status(status).body(error);
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Not Found",
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(error);
+    }
+
+
+    /*
+     * Regla de negocio
+     * HTTP 409
+     */
+    @ExceptionHandler(ReglaNegocioException.class)
+    public ResponseEntity<ErrorResponseDTO> handleBusinessRule(
+            ReglaNegocioException ex,
+            HttpServletRequest request) {
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Conflict",
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(error);
+    }
+
+
+    /*
+     * Errores de @Valid
+     * HTTP 400
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidation(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request) {
+
+        Map<String, String> validationErrors =
+                new LinkedHashMap<>();
+
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error ->
+                        validationErrors.put(
+                                error.getField(),
+                                error.getDefaultMessage()
+                        )
+                );
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                "Existen errores de validación",
+                request.getRequestURI(),
+                validationErrors
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(error);
     }
 }
