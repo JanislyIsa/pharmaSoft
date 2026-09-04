@@ -28,8 +28,7 @@ public class ProductoController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<ProductoResponseDTO> findById(@PathVariable Long id){
-        ResponseEntity.ok(productoService.read(id));
-        return null;
+        return ResponseEntity.ok(productoService.read(id));
     }
     @PostMapping
     public ResponseEntity<ProductoResponseDTO> create(@Valid @RequestBody ProductoRequestDTO requestDTO){

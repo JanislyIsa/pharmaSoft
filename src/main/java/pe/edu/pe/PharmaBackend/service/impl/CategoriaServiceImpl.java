@@ -61,8 +61,10 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     @Transactional(readOnly = true)
-    public ClienteResponseDTO read(Long id) {
-        return categoriaRepository.findById(id).map(this::convertirResponse);
+    public CategoriaResponseDTO read(Long id) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Categoria no encontrada con el id: " + id));
+        return convertirResponse(categoria);
     }
 
     @Override

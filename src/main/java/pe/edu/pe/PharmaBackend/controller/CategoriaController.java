@@ -26,8 +26,7 @@ public class CategoriaController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long id){
-       ResponseEntity.ok(categoriaService.read(id));
-        return null;
+        return ResponseEntity.ok(categoriaService.read(id));
     }
     @PostMapping
     public ResponseEntity<CategoriaResponseDTO> create(@Valid @RequestBody CategoriaRequestDTO requestDTO){
