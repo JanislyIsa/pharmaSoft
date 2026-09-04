@@ -10,99 +10,110 @@ import pe.edu.pe.PharmaBackend.entity.Categoria;
 import pe.edu.pe.PharmaBackend.entity.Producto;
 import pe.edu.pe.PharmaBackend.exception.RecursoNoEncontradoException;
 import pe.edu.pe.PharmaBackend.exception.ReglaNegocioException;
-import pe.edu.pe.PharmaBackend.mapper.ProductoMapper;
 import pe.edu.pe.PharmaBackend.repository.CategoriaRepository;
 import pe.edu.pe.PharmaBackend.repository.ProductoRepository;
 import pe.edu.pe.PharmaBackend.service.service.ProductoService;
 
-import java.util.Optional;
-
+import java.time.LocalDateTime;
 @Service
 public class ProductoServiceImpl implements ProductoService {
-
     private static final Logger LOG = LoggerFactory.getLogger(ProductoServiceImpl.class);
-
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
-    private final ProductoMapper productoMapper;
 
-    public ProductoServiceImpl(ProductoRepository productoRepository,
-                               CategoriaRepository categoriaRepository,
-                               ProductoMapper productoMapper) {
+    public ProductoServiceImpl(ProductoRepository productoRepository, CategoriaRepository categoriaRepository){
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
-        this.productoMapper = productoMapper;
     }
 
     @Override
     @Transactional
     public ProductoResponseDTO create(ProductoRequestDTO t) {
-        LOG.info("Creando producto '{}' con categoriaId={}", t.getNombre(), t.getCategoriaId());
-        Categoria categoria = obtenerCategoriaValida(t.getCategoriaId());
-
         String nombre = t.getNombre().trim();
-        if (productoRepository.existsByNombreIgnoreCase(nombre)) {
-            LOG.warn("Intento de crear producto duplicado: {}", nombre);
-            throw new ReglaNegocioException("El nombre de producto ya existe en el sistema: " + nombre);
+        if (productoRepository.existsByNombreIgnoreCase(nombre)){
+            throw new ReglaNegocioException(
+                    "Ya existe un producto con el nombre "+nombre
+            );
         }
+        Producto producto = new Producto();
+        producto.setNombre(nombre);
+        producto.setPrecio(t.getPrecio());
+        producto.setStock(t.getStock());
+        producto.setEstado(t.getEstado());
+        producto.setCategoria(buscarCategoriaPorId(t.getCategoriaId()));
+        Producto prodCreada = productoRepository.save(producto);
+        return convertirResponse(prodCreada);
+    }
 
-        Producto producto = productoMapper.toEntity(t, categoria);
-        Producto creado = productoRepository.saveAndFlush(producto);
-        LOG.info("Producto creado con id={}, estado={} (stock={}), categoria id={}",
-                creado.getId(), creado.getEstado(), creado.getStock(), categoria.getId());
-        return productoMapper.toResponseDTO(creado);
+    private Categoria buscarCategoriaPorId(Long id) {
+        return categoriaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Categoría no encontrada con id: " + id
+                ));
     }
 
     @Override
     @Transactional
-    public ProductoResponseDTO update(Long id, ProductoRequestDTO t) {
-        LOG.info("Actualizando producto id={}", id);
-        Producto producto = productoRepository.findById(id).orElseThrow(() ->
-                new RecursoNoEncontradoException("Producto no encontrado con el id: " + id));
+    public ProductoResponseDTO update(Long aLong, ProductoRequestDTO t) {
+        Producto producto = productoRepository.findById(aLong).orElseThrow(()->
+                new RecursoNoEncontradoException(
+                        "Producto no encontrada con id: "+aLong
+                )
+        );
+        producto.setNombre(t.getNombre());
+        producto.setPrecio(t.getPrecio());
+        producto.setStock(t.getStock());
+        producto.setEstado(t.get());
+        producto.setCategoria(buscarCategoriaPorId(t.getCategoriaId()));
+        producto.setFechaModificacion(LocalDateTime.now());
 
-        Categoria categoria = obtenerCategoriaValida(t.getCategoriaId());
-
-        String nombre = t.getNombre().trim();
-        if (productoRepository.existsByNombreIgnoreCaseAndIdNot(nombre, id)) {
-            LOG.warn("Nombre duplicado al actualizar producto id={}: {}", id, nombre);
-            throw new ReglaNegocioException("El nombre de producto ya existe en el sistema: " + nombre);
-        }
-
-        productoMapper.actualizarEntity(producto, t, categoria);
-        Producto actualizado = productoRepository.saveAndFlush(producto);
-        LOG.info("Producto id={} actualizado, nuevo estado={} (stock={})",
-                actualizado.getId(), actualizado.getEstado(), actualizado.getStock());
-        return productoMapper.toResponseDTO(actualizado);
+        Producto prodActualizada = productoRepository.save(producto);
+        return convertirResponse(prodActualizada);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProductoResponseDTO> read(Long id) {
-        LOG.info("Consultando producto id={}", id);
-        return productoRepository.findById(id).map(productoMapper::toResponseDTO);
+    public ProductoResponseDTO read(Long aLong) {
+        Producto producto = productoRepository.findById(aLong)
+                .orElseThrow(()->
+                        new RecursoNoEncontradoException(
+                                "Producto no encontrar con id: "+aLong
+                        )
+                );
+        return convertirResponse(producto);
     }
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        LOG.info("Eliminando producto id={}", id);
-        Producto producto = productoRepository.findById(id).orElseThrow(() ->
-                new RecursoNoEncontradoException("Producto no encontrado con el id: " + id));
+    public void delete(Long aLong) {
+        Producto producto = productoRepository.findById(aLong).orElseThrow(()->
+                new RecursoNoEncontradoException(
+                        "Producto no encontrada con id: "+ aLong
+                )
+        );
         productoRepository.delete(producto);
-        LOG.info("Producto id={} eliminado correctamente", id);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Iterable<ProductoResponseDTO> readAll() {
-        LOG.info("Consultando listado completo de productos");
-        return productoRepository.findAll().stream().map(productoMapper::toResponseDTO).toList();
+        return productoRepository.findAll()
+                .stream()
+                .map(this::convertirResponse)
+                .toList();
     }
-
-    private Categoria obtenerCategoriaValida(Long categoriaId) {
-        return categoriaRepository.findById(categoriaId).orElseThrow(() -> {
-            LOG.warn("Referencia inválida: no existe categoria con id={}", categoriaId);
-            return new RecursoNoEncontradoException("La categoría con id " + categoriaId + " no existe");
-        });
+    private ProductoResponseDTO convertirResponse(Producto producto){
+        return new ProductoResponseDTO(
+                producto.getId(),
+                producto.getNombre(),
+                producto.getDescripcion(),
+                producto.getPrecio(),
+                producto.getStock(),
+                producto.getCategoria() != null ? producto.getCategoria().getId() : null,
+                producto.getCategoria()!=null ? producto.getCategoria().getNombre() : null,
+                producto.getEstado(),
+                producto.getFechaCreacion(),
+                producto.getFechaModificacion()
+        );
     }
 }

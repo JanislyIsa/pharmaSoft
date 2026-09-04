@@ -6,13 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pe.PharmaBackend.dto.CategoriaRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.CategoriaResponseDTO;
+import pe.edu.pe.PharmaBackend.dto.ClienteResponseDTO;
 import pe.edu.pe.PharmaBackend.entity.Categoria;
 import pe.edu.pe.PharmaBackend.exception.RecursoNoEncontradoException;
 import pe.edu.pe.PharmaBackend.exception.ReglaNegocioException;
 import pe.edu.pe.PharmaBackend.repository.CategoriaRepository;
 import pe.edu.pe.PharmaBackend.service.service.CategoriaService;
-
-import java.util.Optional;
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService {
@@ -62,7 +61,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CategoriaResponseDTO> read(Long id) {
+    public ClienteResponseDTO read(Long id) {
         return categoriaRepository.findById(id).map(this::convertirResponse);
     }
 
