@@ -130,6 +130,30 @@ public class VentaServiceImpl implements VentaService {
         return ventaRepository.findAll().stream().map(this::convertirResponse).toList();
     }
 
+    @Override
+    @Transactional
+    public VentaResponseDTO anular(Long id) {
+
+        log.info("Iniciando anulación de venta. ventaId={}", id);
+
+        Venta venta = ventaRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Venta no encontrada. ventaId={}", id);
+                    return new RecursoNoEncontradoException("Venta no encontrada con id: " + id);
+                });
+
+        if (venta.getEstado() == EstadoVenta.ANULADA) {
+            log.warn("La venta ya estaba anulada. ventaId={}", id);
+            throw new ReglaNegocioException("La venta ya se encuentra anulada");
+        }
+
+        venta.setEstado(EstadoVenta.ANULADA);
+
+        log.info("Venta anulada con éxito. ventaId={}", id);
+
+        return convertirResponse(venta);
+    }
+
     private VentaResponseDTO convertirResponse(Venta venta) {
 
         List<DetalleVentaResponseDTO> detalles =

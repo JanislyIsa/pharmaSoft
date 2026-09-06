@@ -9,4 +9,5 @@ public interface VentaService {
     VentaResponseDTO registrar(VentaRequestDTO request);
     VentaResponseDTO buscar(Long id);
     List<VentaResponseDTO> listar();
+    VentaResponseDTO anular(Long id);   // <-- agregar esta línea
 }
