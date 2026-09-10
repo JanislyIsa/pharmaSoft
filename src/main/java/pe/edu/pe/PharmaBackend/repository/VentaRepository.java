@@ -4,30 +4,73 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import pe.edu.pe.PharmaBackend.dto.reporte.ProductoMasVendidoDTO;
+import pe.edu.pe.PharmaBackend.dto.reporte.VentaPorCategoriaDTO;
 import pe.edu.pe.PharmaBackend.entity.Venta;
 import pe.edu.pe.PharmaBackend.enums.EstadoVenta;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VentaRepository extends JpaRepository<Venta, Long> {
+
     @Query("""
-            SELECT DISTINCT v FROM venta v 
-            LEFT JOIN FETCH v.cliente c
-            LEFT JOIN FETCH v.detalle d
-            LEFT JOIN FETCH v.producto p
-            WHERE (:clienteId IS NULL OR c.id = :clienteId) 
-            AND (:estado IS NULL OR v.estado = :estado)
-            AND (:desde IS NULL OR v.fecha >= :desde)
-            AND (:hasta IS NULL OR v.fecha <= :hasta)
+            select distinct v
+            from Venta v
+            left join fetch v.cliente c
+            left join fetch v.detalles d
+            left join fetch d.producto p
+            where (:clienteId is null or c.id = :clienteId)
+              and (:estado    is null or v.estado = :estado)
+              and (:desde     is null or v.fecha >= :desde)
+              and (:hasta     is null or v.fecha <= :hasta)
             """)
     List<Venta> buscar(
-            @Param("ClienteId")Long clienteId,
+            @Param("clienteId") Long clienteId,
             @Param("estado") EstadoVenta estado,
-            @Param("desde")LocalDateTime desde,
-            @Param("hasta")LocalDateTime hasta,
-            Sort sort
-            );
+            @Param("desde") LocalDateTime desde,
+            @Param("hasta") LocalDateTime hasta,
+            Sort sort);
 
+    @Query("""
+            select new pe.edu.pe.PharmaBackend.dto.reporte.VentaPorCategoriaDTO(
+                       cat.id,
+                       cat.nombre,
+                       sum(d.cantidad),
+                       sum(d.subtotal))
+            from DetalleVenta d
+            join d.venta v
+            join d.producto p
+            join p.categoria cat
+            where v.estado = pe.edu.pe.PharmaBackend.enums.EstadoVenta.REGISTRADA
+              and (:desde is null or v.fecha >= :desde)
+              and (:hasta is null or v.fecha <= :hasta)
+            group by cat.id, cat.nombre
+            order by sum(d.subtotal) desc
+            """)
+    List<VentaPorCategoriaDTO> reporteVentasPorCategoria(
+            @Param("desde") LocalDateTime desde,
+            @Param("hasta") LocalDateTime hasta);
+
+    @Query("""
+            select new pe.edu.pe.PharmaBackend.dto.reporte.ProductoMasVendidoDTO(
+                       p.id,
+                       p.nombre,
+                       cat.nombre,
+                       sum(d.cantidad),
+                       sum(d.subtotal))
+            from DetalleVenta d
+            join d.venta v
+            join d.producto p
+            join p.categoria cat
+            where v.estado = pe.edu.pe.PharmaBackend.enums.EstadoVenta.REGISTRADA
+              and (:desde is null or v.fecha >= :desde)
+              and (:hasta is null or v.fecha <= :hasta)
+            group by p.id, p.nombre, cat.nombre
+            order by sum(d.cantidad) desc
+            """)
+    List<ProductoMasVendidoDTO> reporteProductosMasVendidos(
+            @Param("desde") LocalDateTime desde,
+            @Param("hasta") LocalDateTime hasta);
 }
+

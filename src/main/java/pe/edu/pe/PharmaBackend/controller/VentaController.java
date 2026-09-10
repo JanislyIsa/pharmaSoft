@@ -1,13 +1,16 @@
 package pe.edu.pe.PharmaBackend.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.pe.PharmaBackend.dto.VentaRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.VentaResponseDTO;
+import pe.edu.pe.PharmaBackend.enums.EstadoVenta;
 import pe.edu.pe.PharmaBackend.service.service.VentaService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -51,12 +54,45 @@ public class VentaController {
                 ventaService.listar()
         );
     }
-    @PatchMapping("/{id}/anular")
-    public ResponseEntity<VentaResponseDTO> anular(
-            @PathVariable Long id) {
+
+    /*
+     * Búsqueda de ventas con filtros combinados.
+     *
+     * Todos los parámetros son opcionales; los que no se envían no
+     * filtran. Sin coincidencias responde 200 con arreglo vacío.
+     */
+    @GetMapping("/buscar")
+    public ResponseEntity<List<VentaResponseDTO>> buscar(
+
+            @RequestParam(required = false)
+            Long clienteId,
+
+            @RequestParam(required = false)
+            EstadoVenta estado,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate desde,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate hasta,
+
+            @RequestParam(required = false, defaultValue = "fecha")
+            String ordenarPor,
+
+            @RequestParam(required = false, defaultValue = "desc")
+            String direccion) {
 
         return ResponseEntity.ok(
-                ventaService.anular(id)
+                ventaService.buscarVentas(
+                        clienteId,
+                        estado,
+                        desde,
+                        hasta,
+                        ordenarPor,
+                        direccion
+                )
         );
     }
 }

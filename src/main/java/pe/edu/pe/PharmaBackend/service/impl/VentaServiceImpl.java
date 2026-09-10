@@ -23,13 +23,19 @@ import pe.edu.pe.PharmaBackend.repository.VentaRepository;
 import pe.edu.pe.PharmaBackend.service.service.VentaService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class VentaServiceImpl implements VentaService {
 
     private static final Logger log = LoggerFactory.getLogger(VentaServiceImpl.class);
+
+    private static final String ORDEN_POR_DEFECTO = "fecha";
+    private static final Set<String> CAMPOS_ORDENABLES = Set.of("fecha", "total", "estado");
 
     private final VentaRepository ventaRepository;
     private final ClienteRepository clienteRepository;
@@ -132,6 +138,64 @@ public class VentaServiceImpl implements VentaService {
     }
 
     @Override
+    public List<VentaResponseDTO> buscarVentas(Long clienteId, EstadoVenta estado, LocalDate desde, LocalDate hasta, String ordenarPor, String direccion) {
+        return List.of();
+    }
+
+    @Transactional(readOnly = true)
+    public List<VentaResponseDTO> buscar(
+            Long clienteId,
+            EstadoVenta estado,
+            LocalDate desde,
+            LocalDate hasta,
+            String ordenarPor,
+            String direccion) {
+
+        long inicio = System.currentTimeMillis();
+
+        log.info("Inicio buscar ventas | clienteId={} | estado={} | "
+                        + "desde={} | hasta={} | ordenarPor={} | direccion={}",
+                clienteId, estado, desde, hasta, ordenarPor, direccion);
+
+        if (desde != null
+                && hasta != null
+                && desde.isAfter(hasta)) {
+
+            throw new ReglaNegocioException(
+                    "El rango de fechas es inválido: 'desde' ("
+                            + desde
+                            + ") es posterior a 'hasta' ("
+                            + hasta + ")");
+        }
+
+        Sort sort = construirSort(ordenarPor, direccion);
+
+        LocalDateTime desdeHora = (desde == null)
+                ? null
+                : desde.atStartOfDay();
+
+        LocalDateTime hastaHora = (hasta == null)
+                ? null
+                : hasta.atTime(LocalTime.MAX);
+
+        List<VentaResponseDTO> resultado =
+                ventaRepository
+                        .buscar(clienteId, estado, desdeHora, hastaHora, sort)
+                        .stream()
+                        .map(this::convertirResponse)
+                        .toList();
+
+        log.info("Fin buscar ventas | clienteId={} | estado={} | "
+                        + "desde={} | hasta={} | orden={} {} | "
+                        + "filas={} | duracionMs={}",
+                clienteId, estado, desde, hasta, ordenarPor, direccion,
+                resultado.size(),
+                System.currentTimeMillis() - inicio);
+
+        return resultado;
+    }
+
+
     @Transactional
     public VentaResponseDTO anular(Long id) {
 
@@ -155,11 +219,38 @@ public class VentaServiceImpl implements VentaService {
         return convertirResponse(venta);
     }
 
-    @Override
-    public List<VentaResponseDTO> buscar(Long ClienteId, EstadoVenta Estado, LocalDateTime desde, LocalDateTime hasta) {
-        return List.of();
-    }
+    private Sort construirSort(String ordenarPor, String direccion) {
 
+        String campo = (ordenarPor == null || ordenarPor.isBlank())
+                ? ORDEN_POR_DEFECTO
+                : ordenarPor.trim();
+
+        if (!CAMPOS_ORDENABLES.contains(campo)) {
+
+            throw new ReglaNegocioException(
+                    "El campo de ordenamiento '"
+                            + campo
+                            + "' no está permitido. Campos válidos: "
+                            + CAMPOS_ORDENABLES);
+        }
+
+        String sentido = (direccion == null || direccion.isBlank())
+                ? "desc"
+                : direccion.trim();
+
+        if (!sentido.equalsIgnoreCase("asc")
+                && !sentido.equalsIgnoreCase("desc")) {
+
+            throw new ReglaNegocioException(
+                    "La dirección de ordenamiento '"
+                            + sentido
+                            + "' no está permitida. Valores válidos: asc, desc");
+        }
+
+        return sentido.equalsIgnoreCase("asc")
+                ? Sort.by(campo).ascending()
+                : Sort.by(campo).descending();
+    }
 
     private VentaResponseDTO convertirResponse(Venta venta) {
 
@@ -185,10 +276,4 @@ public class VentaServiceImpl implements VentaService {
                 detalles
         );
     }
-
-    private void validarFechas(
-            LocalDateTime desde,
-            LocalDateTime hasta {
-        if (desde !=null && hasta !=null)
-    })
 }
