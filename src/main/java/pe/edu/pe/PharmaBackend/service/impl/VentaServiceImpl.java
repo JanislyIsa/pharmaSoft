@@ -137,13 +137,9 @@ public class VentaServiceImpl implements VentaService {
         return ventaRepository.findAll().stream().map(this::convertirResponse).toList();
     }
 
-    @Override
-    public List<VentaResponseDTO> buscarVentas(Long clienteId, EstadoVenta estado, LocalDate desde, LocalDate hasta, String ordenarPor, String direccion) {
-        return List.of();
-    }
 
     @Transactional(readOnly = true)
-    public List<VentaResponseDTO> buscar(
+    public List<VentaResponseDTO> buscarVentas(
             Long clienteId,
             EstadoVenta estado,
             LocalDate desde,
