@@ -2,6 +2,7 @@ package pe.edu.pe.PharmaBackend.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pe.PharmaBackend.dto.DetalleVentaRequestDTO;
@@ -154,6 +155,12 @@ public class VentaServiceImpl implements VentaService {
         return convertirResponse(venta);
     }
 
+    @Override
+    public List<VentaResponseDTO> buscar(Long ClienteId, EstadoVenta Estado, LocalDateTime desde, LocalDateTime hasta) {
+        return List.of();
+    }
+
+
     private VentaResponseDTO convertirResponse(Venta venta) {
 
         List<DetalleVentaResponseDTO> detalles =
@@ -178,4 +185,10 @@ public class VentaServiceImpl implements VentaService {
                 detalles
         );
     }
+
+    private void validarFechas(
+            LocalDateTime desde,
+            LocalDateTime hasta {
+        if (desde !=null && hasta !=null)
+    })
 }
