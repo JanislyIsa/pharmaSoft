@@ -55,12 +55,14 @@ public class VentaController {
         );
     }
 
-    /*
-     * Búsqueda de ventas con filtros combinados.
-     *
-     * Todos los parámetros son opcionales; los que no se envían no
-     * filtran. Sin coincidencias responde 200 con arreglo vacío.
-     */
+    @PatchMapping("/{id}/anular")
+    public ResponseEntity<VentaResponseDTO> anular(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                ventaService.anular(id)
+        );
+    }
     @GetMapping("/buscar")
     public ResponseEntity<List<VentaResponseDTO>> buscar(
 

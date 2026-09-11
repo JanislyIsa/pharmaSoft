@@ -138,6 +138,7 @@ public class VentaServiceImpl implements VentaService {
     }
 
 
+    @Override
     @Transactional(readOnly = true)
     public List<VentaResponseDTO> buscarVentas(
             Long clienteId,
@@ -192,6 +193,7 @@ public class VentaServiceImpl implements VentaService {
     }
 
 
+    @Override
     @Transactional
     public VentaResponseDTO anular(Long id) {
 
