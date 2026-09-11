@@ -19,3 +19,6 @@ springdoc:
     path: /swagger-ui.html
   api-docs:
     enabled: true
+logging:
+  level:
+    pe.edu.pe.PharmaBackend: DEBUG
