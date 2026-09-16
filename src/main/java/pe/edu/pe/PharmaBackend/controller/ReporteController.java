@@ -26,10 +26,6 @@ public class ReporteController {
         this.reporteService = reporteService;
     }
 
-    /*
-     * Total facturado y unidades vendidas por categoría.
-     * El rango de fechas es opcional: sin fechas reporta el histórico.
-     */
     @GetMapping("/ventas-por-categoria")
     public ResponseEntity<List<VentaPorCategoriaDTO>> ventasPorCategoria(
 

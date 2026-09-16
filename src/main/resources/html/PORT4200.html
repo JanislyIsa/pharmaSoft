@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba CORS — Origen autorizado (4200)</title>
+    <style>
+        body { font-family: monospace; padding: 2rem; }
+        pre { background: #111; color: #0f0; padding: 1rem; overflow-x: auto; }
+        .error { color: #c00; font-weight: bold; }
+        .ok { color: #080; font-weight: bold; }
+    </style>
+</head>
+<body>
+<h1>Prueba CORS — sirviendo este archivo en el puerto 4200</h1>
+<p>Este origen (<code>http://localhost:4200</code>) SÍ está en <code>CorsConfig.allowedOrigins</code>.</p>
+<p>Resultado: <span id="estado">ejecutando...</span></p>
+<h3>Respuesta / error:</h3>
+<pre id="salida">esperando...</pre>
+
+<script>
+    const url = "http://localhost:8080/api/v1/reportes/ventas-por-categoria";
+
+    fetch(url)
+        .then(async (resp) => {
+            document.getElementById("estado").innerHTML =
+                `<span class="ok">Petición completada. HTTP ${resp.status}</span>`;
+
+            const headersTexto = [...resp.headers.entries()]
+                .map(([k, v]) => `${k}: ${v}`)
+                .join("\n");
+
+            const cuerpo = await resp.text();
+
+            document.getElementById("salida").textContent =
+                "Cabeceras de respuesta:\n" + headersTexto +
+                "\n\nCuerpo:\n" + cuerpo;
+
+            console.log("CORS OK. Headers:", headersTexto);
+        })
+        .catch((err) => {
+            document.getElementById("estado").innerHTML =
+                `<span class="error">Bloqueado por CORS o error de red</span>`;
+            document.getElementById("salida").textContent = String(err);
+            console.error("Fetch falló:", err);
+        });
+</script>
+</body>
+</html>
