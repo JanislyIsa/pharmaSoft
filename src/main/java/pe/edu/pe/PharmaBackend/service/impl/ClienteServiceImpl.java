@@ -2,10 +2,13 @@ package pe.edu.pe.PharmaBackend.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pe.PharmaBackend.dto.ClienteRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.ClienteResponseDTO;
+import pe.edu.pe.PharmaBackend.dto.PaginaResponseDTO;
 import pe.edu.pe.PharmaBackend.entity.Cliente;
 import pe.edu.pe.PharmaBackend.exception.RecursoNoEncontradoException;
 import pe.edu.pe.PharmaBackend.exception.ReglaNegocioException;
@@ -116,6 +119,23 @@ public class ClienteServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public PaginaResponseDTO<ClienteResponseDTO> listar(Pageable pageable) {
+        log.info("Listando clientes, página={}, tamaño={}",
+                pageable.getPageNumber(), pageable.getPageSize());
+        Page<ClienteResponseDTO> pagina = clienteRepository.findAll(pageable)
+                .map(this::convertirResponse);
+        return new PaginaResponseDTO<>(
+                pagina.getContent(),
+                pagina.getNumber(),
+                pagina.getSize(),
+                pagina.getTotalElements(),
+                pagina.getTotalPages(),
+                pagina.isLast()
+        );
+    }
+
+    @Override
     @Transactional
     public ClienteResponseDTO update(
             Long id,
@@ -195,10 +215,17 @@ public class ClienteServiceImpl
                                 )
                         );
 
-        clienteRepository.delete(cliente);
+        if (!Boolean.TRUE.equals(cliente.getEstado())) {
+            throw new ReglaNegocioException(
+                    "El cliente ya se encuentra inactivo."
+            );
+        }
+
+        cliente.setEstado(false);
+        clienteRepository.save(cliente);
 
         log.info(
-                "Cliente id={} eliminado correctamente",
+                "Cliente id={} dado de baja correctamente",
                 id
         );
     }

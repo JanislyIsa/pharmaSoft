@@ -21,3 +21,7 @@ springdoc:
     enabled: false
   api-docs:
     enabled: false
+
+logging:
+  level:
+    pe.edu.pe.PharmaBackend: INFO

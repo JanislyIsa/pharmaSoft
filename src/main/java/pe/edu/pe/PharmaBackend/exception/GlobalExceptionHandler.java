@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import pe.edu.pe.PharmaBackend.exception.dto.ErrorResponseDTO;
 
@@ -16,10 +17,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /*
-     * Recurso no encontrado
-     * HTTP 404
-     */
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<ErrorResponseDTO> handleNotFound(
             RecursoNoEncontradoException ex,
@@ -39,11 +36,6 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
-
-    /*
-     * Regla de negocio
-     * HTTP 409
-     */
     @ExceptionHandler(ReglaNegocioException.class)
     public ResponseEntity<ErrorResponseDTO> handleBusinessRule(
             ReglaNegocioException ex,
@@ -64,10 +56,6 @@ public class GlobalExceptionHandler {
     }
 
 
-    /*
-     * Errores de @Valid
-     * HTTP 400
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidation(
             MethodArgumentNotValidException ex,
@@ -92,6 +80,36 @@ public class GlobalExceptionHandler {
                 "Existen errores de validación",
                 request.getRequestURI(),
                 validationErrors
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(error);
+    }
+
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponseDTO> handleTypeMismatch(
+            MethodArgumentTypeMismatchException ex,
+            HttpServletRequest request) {
+
+        String tipoEsperado = (ex.getRequiredType() != null)
+                ? ex.getRequiredType().getSimpleName()
+                : "desconocido";
+
+        String mensaje = "El parámetro '" + ex.getName()
+                + "' con valor '" + ex.getValue()
+                + "' no tiene un formato válido. Se esperaba: " + tipoEsperado
+                + (tipoEsperado.equals("LocalDate") ? " en formato ISO (yyyy-MM-dd)" : "");
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                mensaje,
+                request.getRequestURI(),
+                null
         );
 
         return ResponseEntity
