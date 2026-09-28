@@ -17,10 +17,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /*
-     * Recurso no encontrado
-     * HTTP 404
-     */
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<ErrorResponseDTO> handleNotFound(
             RecursoNoEncontradoException ex,
@@ -40,11 +36,6 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
-
-    /*
-     * Regla de negocio
-     * HTTP 409
-     */
     @ExceptionHandler(ReglaNegocioException.class)
     public ResponseEntity<ErrorResponseDTO> handleBusinessRule(
             ReglaNegocioException ex,
@@ -65,10 +56,6 @@ public class GlobalExceptionHandler {
     }
 
 
-    /*
-     * Errores de @Valid
-     * HTTP 400
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidation(
             MethodArgumentNotValidException ex,
@@ -101,11 +88,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    /*
-     * Parámetro de query con formato inválido
-     * (por ejemplo, una fecha que no cumple ISO-8601)
-     * HTTP 400
-     */
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponseDTO> handleTypeMismatch(
             MethodArgumentTypeMismatchException ex,

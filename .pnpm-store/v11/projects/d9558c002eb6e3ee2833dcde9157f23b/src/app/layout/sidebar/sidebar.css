@@ -1,0 +1,13 @@
+:host { display: block; height: 100%; }
+.sidebar { position: relative; display: flex; flex-direction: column; min-height: 100%; padding: 28px 16px; background: #fff; border-right: 1px solid #e5e9e5; }
+.eyebrow { margin: 0 10px 32px; color: #65746f; font-size: 11px; }
+.section-label { margin: 0 10px 11px; color: #99a39e; font-size: 9px; font-weight: 750; letter-spacing: .15em; }
+nav { display: grid; gap: 5px; }
+nav a { display: flex; align-items: center; gap: 12px; min-height: 43px; padding: 0 11px; border-radius: 10px; color: #56635d; text-decoration: none; font-size: 13px; font-weight: 580; }
+nav a:hover { background: #f3f6f3; color: #1e433a; }
+nav a.active { background: #eaf3ef; color: #1c5848; font-weight: 700; }
+.nav-icon { display: grid; width: 23px; height: 23px; place-items: center; color: #467766; font-size: 18px; }
+.nav-arrow { margin-left: auto; font-size: 20px; }
+.sidebar-foot { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 17px 8px 0; border-top: 1px solid #edf0ed; color: #31433b; font-size: 11px; }
+.foot-mark { display: grid; width: 29px; height: 29px; place-items: center; border-radius: 9px; background: #12304a; color: #c0e2d4; font-weight: 800; }
+.sidebar-foot small { display: block; margin-top: 2px; color: #8a968f; font-size: 10px; }

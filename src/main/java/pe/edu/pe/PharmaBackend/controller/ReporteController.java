@@ -42,9 +42,6 @@ public class ReporteController {
         );
     }
 
-    /*
-     * Ranking de productos más vendidos, ordenado por unidades.
-     */
     @GetMapping("/productos-mas-vendidos")
     public ResponseEntity<List<ProductoMasVendidoDTO>> productosMasVendidos(
 
