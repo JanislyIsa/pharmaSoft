@@ -11,6 +11,7 @@ import pe.edu.pe.PharmaBackend.entity.Categoria;
 import pe.edu.pe.PharmaBackend.exception.RecursoNoEncontradoException;
 import pe.edu.pe.PharmaBackend.exception.ReglaNegocioException;
 import pe.edu.pe.PharmaBackend.repository.CategoriaRepository;
+import pe.edu.pe.PharmaBackend.repository.ProductoRepository;
 import pe.edu.pe.PharmaBackend.service.service.CategoriaService;
 
 @Service
@@ -19,9 +20,11 @@ public class CategoriaServiceImpl implements CategoriaService {
     private static final Logger LOG = LoggerFactory.getLogger(CategoriaServiceImpl.class);
 
     private final CategoriaRepository categoriaRepository;
+    private final ProductoRepository productoRepository;
 
-    public CategoriaServiceImpl(CategoriaRepository categoriaRepository) {
+    public CategoriaServiceImpl(CategoriaRepository categoriaRepository, ProductoRepository productoRepository) {
         this.categoriaRepository = categoriaRepository;
+        this.productoRepository = productoRepository;
     }
 
     @Override
@@ -72,6 +75,9 @@ public class CategoriaServiceImpl implements CategoriaService {
     public void delete(Long id) {
         Categoria categoria = categoriaRepository.findById(id).orElseThrow(() ->
                 new RecursoNoEncontradoException("Categoria no encontrada con el id: " + id));
+        if (productoRepository.existsByCategoriaId(id)) {
+            throw new ReglaNegocioException("No se puede eliminar la categoría porque tiene productos asociados.");
+        }
         categoriaRepository.delete(categoria);
         LOG.info("Categoria id={} eliminada", id);
     }

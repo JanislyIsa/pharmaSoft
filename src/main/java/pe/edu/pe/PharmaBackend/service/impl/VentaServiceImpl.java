@@ -2,6 +2,8 @@ package pe.edu.pe.PharmaBackend.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pe.PharmaBackend.dto.DetalleVentaRequestDTO;
@@ -23,6 +25,7 @@ import pe.edu.pe.PharmaBackend.service.service.VentaService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -119,9 +122,18 @@ public class VentaServiceImpl implements VentaService {
     @Override
     @Transactional(readOnly = true)
     public VentaResponseDTO buscar(Long id) {
-        Venta venta = ventaRepository.findById(id).orElseThrow(() ->
+        Venta venta = ventaRepository.findConDatosById(id).orElseThrow(() ->
                 new RecursoNoEncontradoException("Venta no encontrada con id: " + id));
         return convertirResponse(venta);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<VentaResponseDTO> buscar(Long clienteId, EstadoVenta estado, LocalDate desde, LocalDate hasta, Pageable pageable) {
+        LocalDateTime inicio = desde == null ? null : desde.atStartOfDay();
+        LocalDateTime finExclusivo = hasta == null ? null : hasta.plusDays(1).atStartOfDay();
+        return ventaRepository.buscarFiltradas(clienteId, estado, inicio, finExclusivo, pageable)
+                .map(this::convertirResponse);
     }
 
     @Override

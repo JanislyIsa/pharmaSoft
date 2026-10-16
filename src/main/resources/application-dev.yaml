@@ -14,8 +14,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
   api-docs:
     enabled: true
+app:
+  jwt:
+    # Solo desarrollo local. En producción se configura por variable de entorno.
+    secret: w9Z6dP/dzykNH/uiI3Z/KGjBlP0H4Ji+Tuq4fm2cTNuLD4jWafu1gBL74V2SJEvy
+    expiracion-minutos: 60

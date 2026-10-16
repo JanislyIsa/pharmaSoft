@@ -2,9 +2,11 @@ package pe.edu.pe.PharmaBackend.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pe.edu.pe.PharmaBackend.dto.CategoriaResumenDTO;
+import pe.edu.pe.PharmaBackend.dto.PaginaResponseDTO;
 import pe.edu.pe.PharmaBackend.dto.ProductoRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.ProductoResponseDTO;
 import pe.edu.pe.PharmaBackend.entity.Categoria;
@@ -37,6 +39,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setNombre(nombre);
         producto.setPrecio(t.getPrecio());
         producto.setStock(t.getStock());
+        producto.setEstado(t.getEstado());
         producto.setCategoria(buscarCategoriaPorId(t.getCategoriaId()));
         Producto prodCreada = productoRepository.save(producto);
         LOG.info("Producto creado con id={}", prodCreada.getId());
@@ -44,8 +47,12 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     private Categoria buscarCategoriaPorId(Long id) {
-        return categoriaRepository.findById(id)
+        Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Categoría no encontrada con id: " + id));
+        if (Boolean.FALSE.equals(categoria.getEstado())) {
+            throw new ReglaNegocioException("La categoría seleccionada está inactiva.");
+        }
+        return categoria;
     }
 
     @Override
@@ -54,9 +61,15 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = productoRepository.findById(aLong).orElseThrow(() ->
                 new RecursoNoEncontradoException("Producto no encontrado con id: " + aLong));
 
-        producto.setNombre(t.getNombre());
+        String nombre = t.getNombre().trim();
+        if (productoRepository.existsByNombreIgnoreCaseAndIdNot(nombre, aLong)) {
+            throw new ReglaNegocioException("Ya existe un producto con el nombre " + nombre);
+        }
+
+        producto.setNombre(nombre);
         producto.setPrecio(t.getPrecio());
         producto.setStock(t.getStock());
+        producto.setEstado(t.getEstado());
         producto.setCategoria(buscarCategoriaPorId(t.getCategoriaId()));
 
         Producto prodActualizada = productoRepository.save(producto);
@@ -77,8 +90,12 @@ public class ProductoServiceImpl implements ProductoService {
     public void delete(Long aLong) {
         Producto producto = productoRepository.findById(aLong).orElseThrow(() ->
                 new RecursoNoEncontradoException("Producto no encontrado con id: " + aLong));
-        productoRepository.delete(producto);
-        LOG.info("Producto id={} eliminado", aLong);
+        if (Boolean.FALSE.equals(producto.getEstado())) {
+            throw new ReglaNegocioException("El producto ya está inactivo.");
+        }
+        producto.setEstado(false);
+        productoRepository.save(producto);
+        LOG.info("Producto id={} dado de baja", aLong);
     }
 
     @Override
@@ -90,18 +107,29 @@ public class ProductoServiceImpl implements ProductoService {
                 .toList();
     }
 
-    private ProductoResponseDTO convertirResponse(Producto producto){
-        CategoriaResumenDTO categoriaResumen = producto.getCategoria() != null
-                ? new CategoriaResumenDTO(producto.getCategoria().getId(), producto.getCategoria().getNombre())
-                : null;
+    @Override
+    @Transactional(readOnly = true)
+    public PaginaResponseDTO<ProductoResponseDTO> listar(Pageable pageable) {
+        Page<Producto> pagina = productoRepository.findAll(pageable);
+        return new PaginaResponseDTO<>(
+                pagina.getContent().stream().map(this::convertirResponse).toList(),
+                pagina.getNumber(),
+                pagina.getSize(),
+                pagina.getTotalElements(),
+                pagina.getTotalPages(),
+                pagina.isLast()
+        );
+    }
 
+    private ProductoResponseDTO convertirResponse(Producto producto){
         return new ProductoResponseDTO(
                 producto.getId(),
                 producto.getNombre(),
                 producto.getPrecio(),
                 producto.getStock(),
                 producto.getEstado(),
-                categoriaResumen,
+                producto.getCategoria() != null ? producto.getCategoria().getId() : null,
+                producto.getCategoria() != null ? producto.getCategoria().getNombre() : null,
                 producto.getFechaCreacion(),
                 producto.getFechaModificacion()
         );

@@ -1,7 +1,6 @@
 package pe.edu.pe.PharmaBackend.mapper;
 
 import org.springframework.stereotype.Component;
-import pe.edu.pe.PharmaBackend.dto.CategoriaResumenDTO;
 import pe.edu.pe.PharmaBackend.dto.ProductoRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.ProductoResponseDTO;
 import pe.edu.pe.PharmaBackend.entity.Categoria;
@@ -15,6 +14,7 @@ public class ProductoMapper {
         producto.setNombre(dto.getNombre().trim());
         producto.setPrecio(dto.getPrecio());
         producto.setStock(dto.getStock());
+        producto.setEstado(dto.getEstado());
         producto.setCategoria(categoria);
         return producto;
     }
@@ -23,6 +23,7 @@ public class ProductoMapper {
         producto.setNombre(dto.getNombre().trim());
         producto.setPrecio(dto.getPrecio());
         producto.setStock(dto.getStock());
+        producto.setEstado(dto.getEstado());
         producto.setCategoria(categoria);
     }
 
@@ -33,7 +34,8 @@ public class ProductoMapper {
                 producto.getPrecio(),
                 producto.getStock(),
                 producto.getEstado(),
-                new CategoriaResumenDTO(producto.getCategoria().getId(), producto.getCategoria().getNombre()),
+                producto.getCategoria() != null ? producto.getCategoria().getId() : null,
+                producto.getCategoria() != null ? producto.getCategoria().getNombre() : null,
                 producto.getFechaCreacion(),
                 producto.getFechaModificacion()
         );

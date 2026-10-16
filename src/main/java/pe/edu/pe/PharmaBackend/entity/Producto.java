@@ -20,7 +20,7 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 150)
     private String nombre;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -45,16 +45,10 @@ public class Producto {
     @PrePersist
     public void prePersist() {
         this.fechaCreacion = LocalDateTime.now();
-        actualizarEstado();
     }
 
     @PreUpdate
     public void preUpdate() {
         this.fechaModificacion = LocalDateTime.now();
-        actualizarEstado();
-    }
-
-    private void actualizarEstado() {
-        this.estado = this.stock != null && this.stock > 0;
     }
 }
