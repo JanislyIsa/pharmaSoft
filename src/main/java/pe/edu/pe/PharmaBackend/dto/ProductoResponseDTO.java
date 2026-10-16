@@ -18,7 +18,8 @@ public class ProductoResponseDTO {
     private BigDecimal precio;
     private Integer stock;
     private Boolean estado;
-    private CategoriaResumenDTO categoria;
+    private Long categoriaId;
+    private String categoriaNombre;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
 }

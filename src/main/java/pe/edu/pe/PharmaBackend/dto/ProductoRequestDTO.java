@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class ProductoRequestDTO {
 
     @NotBlank(message = "El nombre del producto es obligatorio")
-    @Size(min = 3, max = 100, message = "El nombre debe tener entre 3 y 100 caracteres")
+    @Size(min = 3, max = 150, message = "El nombre debe tener entre 3 y 150 caracteres")
     private String nombre;
 
     @NotNull(message = "El precio es obligatorio")
@@ -27,6 +27,10 @@ public class ProductoRequestDTO {
     @PositiveOrZero(message = "El stock no puede ser negativo")
     private Integer stock;
 
+    @NotNull(message = "El estado es obligatorio")
+    private Boolean estado;
+
     @NotNull(message = "La categoría es obligatoria")
+    @Positive(message = "La categoría debe ser positiva")
     private Long categoriaId;
 }
