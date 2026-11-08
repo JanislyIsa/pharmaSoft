@@ -29,12 +29,17 @@ public class RequestIdFilter extends OncePerRequestFilter {
         MDC.put(CLAVE_MDC, id);
         response.setHeader(CABECERA, id);
         long inicio = System.nanoTime();
+        boolean fallo = false;
         try {
             chain.doFilter(request, response);
+        } catch (IOException | ServletException | RuntimeException ex) {
+            fallo = true;
+            throw ex;
         } finally {
             if (!request.getRequestURI().startsWith("/actuator")) {
                 LOG.info("{} {} -> {} ({} ms)", request.getMethod(), request.getRequestURI(),
-                        response.getStatus(), (System.nanoTime() - inicio) / 1_000_000);
+                        fallo && response.getStatus() < 400 ? 500 : response.getStatus(),
+                        (System.nanoTime() - inicio) / 1_000_000);
             }
             if (anterior == null) {
                 MDC.remove(CLAVE_MDC);

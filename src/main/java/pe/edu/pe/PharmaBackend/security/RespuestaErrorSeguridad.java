@@ -3,6 +3,7 @@ package pe.edu.pe.PharmaBackend.security;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
+import org.slf4j.MDC;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -21,7 +22,8 @@ final class RespuestaErrorSeguridad {
                 + "\"error\":\"" + escapar(error) + "\","
                 + "\"message\":\"" + escapar(mensaje) + "\","
                 + "\"path\":\"" + escapar(request.getRequestURI()) + "\","
-                + "\"validationErrors\":null"
+                + "\"validationErrors\":null,"
+                + "\"requestId\":\"" + escapar(MDC.get("requestId")) + "\""
                 + "}";
         response.setStatus(status);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
