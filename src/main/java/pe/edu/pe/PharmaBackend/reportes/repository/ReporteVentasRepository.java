@@ -18,6 +18,27 @@ public interface ReporteVentasRepository extends JpaRepository<Venta, Long> {
         BigDecimal getMontoTotal();
     }
 
+    interface ProductoMasVendidoProjection {
+        Long getProductoId();
+        String getProductoNombre();
+        Long getCantidadVendida();
+        BigDecimal getMontoTotal();
+    }
+
+    @Query("""
+            select p.id as productoId,
+                   p.nombre as productoNombre,
+                   sum(d.cantidad) as cantidadVendida,
+                   sum(d.subtotal) as montoTotal
+            from DetalleVenta d
+            join d.venta v
+            join d.producto p
+            where v.estado = pe.edu.pe.PharmaBackend.enums.EstadoVenta.REGISTRADA
+            group by p.id, p.nombre
+            order by sum(d.cantidad) desc, p.nombre asc
+            """)
+    List<ProductoMasVendidoProjection> productosMasVendidos();
+
     @Query("""
             select c.id as categoriaId,
                    c.nombre as categoriaNombre,

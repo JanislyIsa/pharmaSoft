@@ -9,7 +9,7 @@ spring:
     database-platform: org.hibernate.dialect.OracleDialect
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
 
     properties:
       hibernate:
@@ -25,6 +25,11 @@ springdoc:
     enabled: true
 app:
   jwt:
-    # Solo desarrollo local. En producción se configura por variable de entorno.
-    secret: w9Z6dP/dzykNH/uiI3Z/KGjBlP0H4Ji+Tuq4fm2cTNuLD4jWafu1gBL74V2SJEvy
+    secret: ${JWT_SECRET:w9Z6dP/dzykNH/uiI3Z/KGjBlP0H4Ji+Tuq4fm2cTNuLD4jWafu1gBL74V2SJEvy}
     expiracion-minutos: 60
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%X{requestId}] %logger{36} - %msg%n"
