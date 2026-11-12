@@ -6,6 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pe.PharmaBackend.dto.auth.EmpleadoResponseDTO;
+import pe.edu.pe.PharmaBackend.dto.auth.AsignarRolesRequestDTO;
+import pe.edu.pe.PharmaBackend.dto.auth.CambiarEstadoUsuarioRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.auth.RolResponseDTO;
 import pe.edu.pe.PharmaBackend.dto.auth.UsuarioRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.auth.UsuarioResponseDTO;
@@ -68,6 +70,13 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ReglaNegocioException(
                     "El empleado " + empleado.getNombreCompleto() + " está inactivo");
         }
+        List<Rol> roles = rolRepository.findAllById(request.getRolIds());
+        if (roles.size() != request.getRolIds().size()) {
+            Set<Long> encontrados = roles.stream().map(Rol::getId).collect(Collectors.toSet());
+            Set<Long> faltantes = new HashSet<>(request.getRolIds());
+            faltantes.removeAll(encontrados);
+            throw new RecursoNoEncontradoException("Roles no encontrados: " + faltantes);
+        }
         if (usuarioRepository.existsByEmpleadoId(empleado.getId())) {
             throw new ReglaNegocioException(
                     "El empleado " + empleado.getNombreCompleto() + " ya tiene un usuario");
@@ -75,13 +84,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuarioRepository.existsByUsernameIgnoreCase(username)) {
             throw new ReglaNegocioException(
                     "Ya existe un usuario con el nombre: " + username);
-        }
-        List<Rol> roles = rolRepository.findAllById(request.getRolIds());
-        if (roles.size() != request.getRolIds().size()) {
-            Set<Long> encontrados = roles.stream().map(Rol::getId).collect(Collectors.toSet());
-            Set<Long> faltantes = new HashSet<>(request.getRolIds());
-            faltantes.removeAll(encontrados);
-            throw new RecursoNoEncontradoException("Roles no encontrados: " + faltantes);
         }
 // BCrypt solo admite 72 BYTES: una ñ o una tilde ocupan 2 bytes en UTF-8
         if (request.getPassword().getBytes(StandardCharsets.UTF_8).length > 72) {
@@ -125,5 +127,54 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .stream()
                 .map(usuarioMapper::toRolResponse)
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public UsuarioResponseDTO asignarRoles(
+            Long id, AsignarRolesRequestDTO request, String actor) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Usuario no encontrado con id: " + id));
+        List<Rol> roles = rolRepository.findAllById(request.getRolIds());
+        if (roles.size() != request.getRolIds().size()) {
+            Set<Long> encontrados = roles.stream().map(Rol::getId).collect(Collectors.toSet());
+            Set<Long> faltantes = new HashSet<>(request.getRolIds());
+            faltantes.removeAll(encontrados);
+            throw new RecursoNoEncontradoException("Roles no encontrados: " + faltantes);
+        }
+
+        boolean usuarioSeAsignaRolesASiMismo = usuario.getUsername().equalsIgnoreCase(actor);
+        boolean tieneAdmin = usuario.getRoles().stream()
+                .anyMatch(rol -> "ADMIN".equals(rol.getNombre()));
+        boolean conservaAdmin = roles.stream()
+                .anyMatch(rol -> "ADMIN".equals(rol.getNombre()));
+        if (usuarioSeAsignaRolesASiMismo && tieneAdmin && !conservaAdmin) {
+            throw new ReglaNegocioException("Un ADMIN no puede quitarse su propio rol ADMIN");
+        }
+
+        usuario.setRoles(new HashSet<>(roles));
+        Usuario guardado = usuarioRepository.save(usuario);
+        log.info("Roles actualizados para usuario={} roles={}",
+                guardado.getUsername(), usuarioMapper.nombresRoles(roles));
+        return usuarioMapper.toUsuarioResponse(guardado);
+    }
+
+    @Override
+    @Transactional
+    public UsuarioResponseDTO cambiarEstado(
+            Long id, CambiarEstadoUsuarioRequestDTO request, String actor) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Usuario no encontrado con id: " + id));
+        if (Boolean.FALSE.equals(request.getEstado())
+                && usuario.getUsername().equalsIgnoreCase(actor)) {
+            throw new ReglaNegocioException("Un ADMIN no puede desactivarse a sí mismo");
+        }
+        usuario.setEstado(request.getEstado());
+        Usuario guardado = usuarioRepository.save(usuario);
+        log.info("Estado actualizado para usuario={} estado={}",
+                guardado.getUsername(), guardado.getEstado());
+        return usuarioMapper.toUsuarioResponse(guardado);
     }
 }

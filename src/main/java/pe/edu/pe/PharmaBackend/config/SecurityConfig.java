@@ -37,6 +37,8 @@ public class SecurityConfig {
     private static final String[] RUTAS_PUBLICAS = {
             "/api/v1/auth/login",
             "/api/health",
+            "/actuator/health",
+            "/actuator/health/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**",
@@ -90,6 +92,8 @@ public class SecurityConfig {
                         .hasAuthority(USUARIOS_ADMINISTRAR.name())
 
                         // Todo lo demas
+                        .requestMatchers("/actuator/**")
+                        .hasAuthority(USUARIOS_ADMINISTRAR.name())
                         .anyRequest().authenticated())
                 .exceptionHandling(errores -> errores
                         .authenticationEntryPoint(authenticationEntryPoint)
