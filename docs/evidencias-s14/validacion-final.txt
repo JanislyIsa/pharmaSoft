@@ -1,0 +1,13 @@
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.649 s -- in pe.edu.pe.PharmaBackend.auditoria.AuditoriaTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.282 s -- in pe.edu.pe.PharmaBackend.config.RequestIdFilterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.209 s -- in pe.edu.pe.PharmaBackend.controller.PaginacionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in pe.edu.pe.PharmaBackend.exception.ErrorTrackingTest
+15:14:50.409 INFO  [] o.f.core.internal.command.DbMigrate - Successfully applied 1 migration to schema "PHARMADB", now at version v4 (execution time 00:00.336s)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.77 s -- in pe.edu.pe.PharmaBackend.PharmaBackendApplicationTests
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.325 s -- in pe.edu.pe.PharmaBackend.security.JwtServiceTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s -- in pe.edu.pe.PharmaBackend.security.PermisosPorRolTest
+[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Application bundle generation complete. [5.852 seconds] - 2026-11-13T20:24:35.548Z
+▲ [WARNING] src/app/features/ventas/pages/venta-form/venta-form.css exceeded maximum budget. Budget 4.00 kB was not met by 57 bytes with a total of 4.06 kB.
