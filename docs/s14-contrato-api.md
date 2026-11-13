@@ -9,4 +9,4 @@ Respuesta 200: PaginaResponseDTO, con contenido de {id,fecha,usuario,accion,enti
 Acciones: LOGIN_EXITOSO, LOGIN_FALLIDO, VENTA_REGISTRADA, PRECIO_MODIFICADO, PRODUCTO_ELIMINADO.
 La baja es lógica. Una venta revertida no publica un evento confirmado. La bitácora no incluye contraseñas ni tokens.
 
-`GET /api/v1/productos/buscar?texto=...` exige CATALOGO_LEER. Devuelve hasta 20 productos activos con stock positivo cuyo nombre contiene el texto (máximo 150 caracteres), ordenados por nombre e ID. Respuesta PaginaResponseDTO.
+`GET /api/v1/productos/buscar?texto=...` exige CATALOGO_LEER. Devuelve hasta 20 productos activos con stock positivo cuyo nombre o categoría contiene el texto (máximo 150 caracteres), ordenados por nombre e ID. Respuesta PaginaResponseDTO.
