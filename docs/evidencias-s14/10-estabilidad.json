@@ -1,5 +1,5 @@
 {
-  "respuestas500": [],
   "total500": 0,
-  "nota": "La prueba de fallo de venta espera 404, no 500. Los 401/403 de permisos son resultados esperados."
+  "respuestas500": [],
+  "nota": "Las tres corridas finales validan también que no haya errores de consola en el flujo principal."
 }

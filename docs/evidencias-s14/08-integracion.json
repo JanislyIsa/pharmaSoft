@@ -1,9 +1,9 @@
 {
   "corridas": [
     {
-      "ventaId": 22405,
-      "productoId": 22371,
-      "requestId": "74c879db",
+      "ventaId": 22414,
+      "productoId": 22398,
+      "requestId": "0324032b",
       "stockAntes": 20,
       "stockDespues": 18,
       "matriz": [
@@ -18,9 +18,9 @@
       "quinientos": []
     },
     {
-      "ventaId": 22406,
-      "productoId": 22374,
-      "requestId": "dc0c0ce4",
+      "ventaId": 22415,
+      "productoId": 22401,
+      "requestId": "2925c537",
       "stockAntes": 20,
       "stockDespues": 18,
       "matriz": [
@@ -35,9 +35,9 @@
       "quinientos": []
     },
     {
-      "ventaId": 22407,
-      "productoId": 22377,
-      "requestId": "fad1d3bd",
+      "ventaId": 22416,
+      "productoId": 22404,
+      "requestId": "d494c1fe",
       "stockAntes": 20,
       "stockDespues": 18,
       "matriz": [

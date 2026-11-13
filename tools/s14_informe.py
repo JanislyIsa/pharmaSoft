@@ -1,7 +1,7 @@
 """Informe sencillo S14 a partir de evidencias verificadas, sin encabezados repetidos."""
 from pathlib import Path
 import json,re
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image, Flowable
 from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from reportlab.lib.colors import HexColor,white
 from reportlab.lib.enums import TA_LEFT
@@ -53,7 +53,16 @@ p('Registra LOGIN_EXITOSO, LOGIN_FALLIDO, VENTA_REGISTRADA, PRECIO_MODIFICADO y 
 p('GET /api/v1/auditoria permite filtrar usuario, acción y fechas, con paginación. Solo USUARIOS_ADMINISTRAR puede consultarlo. Vendedor y almacenero recibieron 403; admin recibió 200. Se agregó una pantalla protegida de Auditoría.')
 p(f'Ejemplo verificado: venta {example["ventaId"]}, usuario vendedor, solicitud <b>{example["requestId"]}</b>, stock {example["stockAntes"]} a {example["stockDespues"]}. Una segunda venta que falló no descontó stock ni añadió un evento falso.')
 img=E/'07-auditoria-spa.png'
-if img.exists():story.append(Image(str(img),width=500,height=281.25))
+if img.exists():
+ from reportlab.lib.utils import ImageReader
+ class Captura(Flowable):
+  def __init__(self):
+   super().__init__();self.width=500;self.height=281.25
+  def draw(self):
+   reader=ImageReader(str(img));w,h=reader.getSize();alto=h*self.width/w
+   self.canv.saveState();clip=self.canv.beginPath();clip.rect(0,0,self.width,self.height);self.canv.clipPath(clip,stroke=0,fill=0)
+   self.canv.drawImage(reader,0,self.height-alto,width=self.width,height=alto);self.canv.restoreState()
+ story.append(Captura())
 page()
 h('Paso 8. Integrar los módulos')
 tabla([['ID','Integración comprobada','Resultado'],['I-01','Cliente de prueba recién registrado aparece en Nueva venta.','Cumple'],['I-02','El buscador ofrece el producto activo con stock y excluye sus variantes inactiva y agotada.','Cumple'],['I-03','Vender 2 unidades reduce el stock de 20 a 18; Productos lo muestra sin F5.','Cumple'],['I-04','El reporte incluye el nuevo producto: 2 unidades y S/ 25.00.','Cumple'],['I-05','La venta tiene evento, usuario vendedor y requestId idéntico al de la petición.','Cumple'],['I-06','Cambiar precio de 12.50 a 13 registra ambos importes y modificadoPor=admin.','Cumple'],['I-07','Vencimiento controlado del reloj de la SPA: login y retorno a /ventas/nueva.','Cumple'],['I-08','Desde página 5, cambiar fechas vuelve a página 1; F5 conserva filtros.','Cumple']],[45,390,65])
@@ -66,11 +75,11 @@ p('Resultado final: <b>21/21 aprobadas</b>. Informe HTML: docs/evidencias-s14/pl
 page()
 h('Paso 10. Registrar, corregir y volver a probar')
 tabla([['ID','Causa y corrección','Estado'],['INC-01','Se aceptaba tamaño 500. Se validó el rango 1 a 100.','Cerrada'],['INC-02','Estado local de listados. Se llevó a la URL y se reinicia al filtrar.','Cerrada'],['INC-03','Selector mostraba tamaño incorrecto. Se selecciona la opción real.','Cerrada'],['INC-04','Nueva venta buscaba solo en 100 productos. Se consulta el servidor con debounce y cancelación.','Cerrada'],['INC-05','Flyway no se activaba. Se añadió el starter, baseline y validación del esquema.','Cerrada'],['INC-06','Assert exigía 12.50 y recibía 12.5. Se aceptan representaciones equivalentes sin omitir los importes.','Cerrada']],[60,375,65])
-p('La primera corrida fue 6/7 por INC-06; se corrigió el assert y luego se ejecutó la suite triple completa. Las incidencias, sus causas y commits están en docs/incidencias.md. No quedan incidencias funcionales críticas ni altas abiertas.')
+p('La primera corrida fue 6/7 por el formato decimal. Una verificación posterior dio 18/21 porque el producto de prueba quedaba fuera de la primera página. Se corrigió el assert y el test pasó a recorrer el paginador real para localizar el producto, sin F5. Después se volvió a ejecutar la suite triple completa. Las incidencias, sus causas y commits están en docs/incidencias.md. No quedan incidencias funcionales críticas ni altas abiertas.')
 p('Maven: <b>23 pruebas aprobadas</b>. Angular: compilación de producción correcta. npm: <b>0 vulnerabilidades</b> tras los parches compatibles de Angular 22. El aviso CSS existente de venta-form.css es de 57 bytes sobre su presupuesto; no impide compilar.')
 h('Paso 11. Versionar el trabajo')
 p('Las ramas locales contienen al menos tres commits cada una. Se separaron código, pruebas y evidencias. Las modificaciones anteriores de S9, S10 y S13 se dejaron fuera de los commits de esta entrega.')
-p('<b>Pendiente externo:</b> publicar las ramas y crear los PR hacia develop. La revisión automática bloqueó el uso de la credencial guardada; requiere autorización explícita. Las descripciones y comandos están preparados en docs/s14-publicacion.md. Este informe no afirma que los PR estén creados.')
+p('<b>Pendiente externo:</b> publicar las ramas y crear los PR hacia develop. Las descripciones y comandos están preparados en docs/s14-publicacion.md. Este informe no afirma que los PR estén creados.')
 p('Backend: <link href="https://github.com/JanislyIsa/pharmaSoft" color="#12315d">github.com/JanislyIsa/pharmaSoft</link><br/>Frontend: <link href="https://github.com/JanislyIsa/pharma-frontend" color="#12315d">github.com/JanislyIsa/pharma-frontend</link>')
 h('Tabla de evidencias')
 tabla([['Evidencia','Valor'],['Carga inicial','5015 productos / 20029 ventas'],['Volumen final, incluidas las corridas',f'{prod} productos / {ventas} ventas'],['Integración / E2E','8/8 filas / 7/7 en cada una de las tres corridas'],['V4 e índices','V4 aplicada; 7 columnas; 3 índices'],['Incidencias registradas / cerradas','6 / 6'],['Consola y respuestas 500 del flujo','Sin errores de navegador ni respuestas 500 en las corridas aprobadas']],[250,250])
