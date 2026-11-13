@@ -7,18 +7,18 @@ select
         p1_0.fecha_modificacion,
         p1_0.nombre,
         p1_0.precio,
-        p1_0.stock 
+        p1_0.stock
     from
-        productos p1_0 
+        productos p1_0
     order by
-        p1_0.nombre 
+        p1_0.nombre
     offset
-        ? rows 
+        ? rows
     fetch
         first ? rows only
 
 Consulta del total
 select
-        count(p1_0.id) 
+        count(p1_0.id)
     from
         productos p1_0
