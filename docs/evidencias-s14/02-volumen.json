@@ -1,0 +1,5 @@
+{
+  "date": "2026-11-12T09:18:34.940343",
+  "sqlResult": "Productos insertados=5000\nVentas insertadas=20000\nCliente de carga ID=41\nPRODUCTOS=5015\nVENTAS=20029",
+  "script": "docs/sql/volumen_pruebas.sql"
+}

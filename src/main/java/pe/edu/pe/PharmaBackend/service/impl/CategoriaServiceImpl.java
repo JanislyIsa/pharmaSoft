@@ -2,6 +2,8 @@ package pe.edu.pe.PharmaBackend.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pe.PharmaBackend.dto.CategoriaRequestDTO;
@@ -29,6 +31,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "categorias", allEntries = true)
     public CategoriaResponseDTO create(CategoriaRequestDTO t) {
         String nombre = t.getNombre().trim();
         if (categoriaRepository.existsByNombreIgnoreCase(nombre)) {
@@ -38,13 +41,14 @@ public class CategoriaServiceImpl implements CategoriaService {
         categoria.setNombre(nombre);
         categoria.setDescripcion(t.getDescripcion());
         categoria.setEstado(t.getEstado());
-        Categoria catCreada = categoriaRepository.save(categoria);
+        Categoria catCreada = categoriaRepository.saveAndFlush(categoria);
         LOG.info("Categoria creada con id={}", catCreada.getId());
         return convertirResponse(catCreada);
     }
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = { "categorias", "productos" }, allEntries = true)
     public CategoriaResponseDTO update(Long id, CategoriaRequestDTO t) {
         Categoria categoria = categoriaRepository.findById(id).orElseThrow(() ->
                 new RecursoNoEncontradoException("Categoria no encontrada con el id: " + id));
@@ -57,13 +61,14 @@ public class CategoriaServiceImpl implements CategoriaService {
         categoria.setNombre(nombre);
         categoria.setDescripcion(t.getDescripcion());
         categoria.setEstado(t.getEstado());
-        Categoria catActualizada = categoriaRepository.save(categoria);
+        Categoria catActualizada = categoriaRepository.saveAndFlush(categoria);
         LOG.info("Categoria id={} actualizada", catActualizada.getId());
         return convertirResponse(catActualizada);
     }
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "categorias", key = "'id-' + #p0")
     public CategoriaResponseDTO read(Long id) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Categoria no encontrada con el id: " + id));
@@ -72,6 +77,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "categorias", allEntries = true)
     public void delete(Long id) {
         Categoria categoria = categoriaRepository.findById(id).orElseThrow(() ->
                 new RecursoNoEncontradoException("Categoria no encontrada con el id: " + id));
@@ -84,12 +90,19 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "categorias", key = "'todas'")
     public Iterable<CategoriaResponseDTO> readAll() {
-        return categoriaRepository.findAll().stream().map(this::convertirResponse).toList();
+        long inicio = System.nanoTime();
+        LOG.info("Inicio listar categorias");
+        var categorias = categoriaRepository.findAll().stream().map(this::convertirResponse).toList();
+        LOG.info("Fin listar categorias | duracionMs={}", (System.nanoTime() - inicio) / 1_000_000);
+        return categorias;
     }
 
     private CategoriaResponseDTO convertirResponse(Categoria categoria) {
         return new CategoriaResponseDTO(
+                categoria.getCreadoPor(),
+                categoria.getModificadoPor(),
                 categoria.getId(),
                 categoria.getNombre(),
                 categoria.getDescripcion(),

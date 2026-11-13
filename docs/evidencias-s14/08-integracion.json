@@ -1,0 +1,59 @@
+{
+  "corridas": [
+    {
+      "ventaId": 22414,
+      "productoId": 22398,
+      "requestId": "0324032b",
+      "stockAntes": 20,
+      "stockDespues": 18,
+      "matriz": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-06"
+      ],
+      "errores": [],
+      "quinientos": []
+    },
+    {
+      "ventaId": 22415,
+      "productoId": 22401,
+      "requestId": "2925c537",
+      "stockAntes": 20,
+      "stockDespues": 18,
+      "matriz": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-06"
+      ],
+      "errores": [],
+      "quinientos": []
+    },
+    {
+      "ventaId": 22416,
+      "productoId": 22404,
+      "requestId": "d494c1fe",
+      "stockAntes": 20,
+      "stockDespues": 18,
+      "matriz": [
+        "I-01",
+        "I-02",
+        "I-03",
+        "I-04",
+        "I-05",
+        "I-06"
+      ],
+      "errores": [],
+      "quinientos": []
+    }
+  ],
+  "filas": 8,
+  "aprobadas": 8,
+  "I07": "Reloj controlado de SPA simula vencimiento y valida retorno a venta",
+  "I08": "Página 5, cambio de fechas y recarga; prueba de paginación"
+}

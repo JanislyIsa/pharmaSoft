@@ -1,0 +1,80 @@
+{
+  "fecha": "2026-11-12T14:35:33.251Z",
+  "erroresConsola": [],
+  "comprobaciones": [
+    {
+      "caso": "Productos F5",
+      "url": "http://127.0.0.1:4200/productos?pagina=1",
+      "pagina": "Página 2 de 251",
+      "filas": 20
+    },
+    {
+      "caso": "Cambiar a 50 reinicia página",
+      "url": "http://127.0.0.1:4200/productos?pagina=0&tamanio=50",
+      "filas": 50
+    },
+    {
+      "caso": "Última página",
+      "url": "http://127.0.0.1:4200/productos?pagina=100&tamanio=50",
+      "resumen": "5001–5015 de 5015",
+      "siguienteDeshabilitado": true
+    },
+    {
+      "caso": "Ordenar reinicia página",
+      "url": "http://127.0.0.1:4200/productos?pagina=0&tamanio=50&orden=precio&dir=asc"
+    },
+    {
+      "caso": "Categoría reinicia página",
+      "url": "http://127.0.0.1:4200/productos?pagina=0&tamanio=50&orden=precio&dir=asc&categoriaId=62"
+    },
+    {
+      "caso": "Ventas filtros y F5",
+      "url": "http://127.0.0.1:4200/ventas?pagina=0&estado=REGISTRADA&tamanio=20&orden=fecha&dir=desc&desde=2026-11-01&hasta=2026-11-12",
+      "estado": "REGISTRADA",
+      "desde": "2026-11-01",
+      "hasta": "2026-11-12",
+      "filas": 20
+    },
+    {
+      "caso": "Ventas tamaño reinicia página",
+      "url": "http://127.0.0.1:4200/ventas?pagina=0&estado=REGISTRADA&tamanio=50&orden=fecha&dir=desc&desde=2026-11-01&hasta=2026-11-12",
+      "filas": 50
+    },
+    {
+      "caso": "Historial restaura página y tamaño",
+      "url": "http://127.0.0.1:4200/ventas?pagina=1&estado=REGISTRADA&tamanio=20&orden=fecha&dir=desc&desde=2026-11-01&hasta=2026-11-12",
+      "filasSeleccionadas": "20"
+    },
+    {
+      "caso": "Ventas ordenar fecha reinicia página",
+      "url": "http://127.0.0.1:4200/ventas?pagina=0&estado=REGISTRADA&tamanio=20&orden=fecha&dir=asc&desde=2026-11-01&hasta=2026-11-12"
+    },
+    {
+      "caso": "Rango invertido muestra validación",
+      "correcto": true
+    },
+    {
+      "caso": "Ventas sin resultados",
+      "resumen": "0–0 de 0",
+      "siguienteDeshabilitado": true
+    },
+    {
+      "caso": "Limpiar elimina filtros",
+      "url": "http://127.0.0.1:4200/ventas?pagina=0&tamanio=20&orden=fecha&dir=asc"
+    },
+    {
+      "caso": "Primera, anterior y última página",
+      "correcto": true
+    },
+    {
+      "caso": "Página fuera de rango se ajusta a la última",
+      "url": "http://127.0.0.1:4200/productos?pagina=250&tamanio=20",
+      "resumen": "5001–5015 de 5015"
+    },
+    {
+      "caso": "Productos categoría conserva selección tras F5",
+      "url": "http://127.0.0.1:4200/productos?pagina=0&tamanio=20&categoriaId=62",
+      "seleccion": "Vitaminas"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "stats": {
+    "startTime": "2026-11-13T20:46:11.741Z",
+    "duration": 67555.04,
+    "expected": 21,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "workersSimultaneos": 1,
+  "retries": 0,
+  "pruebas": [
+    {
+      "prueba": "una ruta protegida lleva al login con returnUrl",
+      "corrida": 1,
+      "estado": "expected",
+      "duracionMs": 1397,
+      "reintentos": 0
+    },
+    {
+      "prueba": "una ruta protegida lleva al login con returnUrl",
+      "corrida": 2,
+      "estado": "expected",
+      "duracionMs": 1424,
+      "reintentos": 0
+    },
+    {
+      "prueba": "una ruta protegida lleva al login con returnUrl",
+      "corrida": 3,
+      "estado": "expected",
+      "duracionMs": 858,
+      "reintentos": 0
+    },
+    {
+      "prueba": "credenciales incorrectas muestran el mensaje del backend",
+      "corrida": 1,
+      "estado": "expected",
+      "duracionMs": 2052,
+      "reintentos": 0
+    },
+    {
+      "prueba": "credenciales incorrectas muestran el mensaje del backend",
+      "corrida": 2,
+      "estado": "expected",
+      "duracionMs": 1230,
+      "reintentos": 0
+    },
+    {
+      "prueba": "credenciales incorrectas muestran el mensaje del backend",
+      "corrida": 3,
+      "estado": "expected",
+      "duracionMs": 1026,
+      "reintentos": 0
+    },
+    {
+      "prueba": "login conserva el destino y recupera la venta tras expirar la sesión",
+      "corrida": 1,
+      "estado": "expected",
+      "duracionMs": 1979,
+      "reintentos": 0
+    },
+    {
+      "prueba": "login conserva el destino y recupera la venta tras expirar la sesión",
+      "corrida": 2,
+      "estado": "expected",
+      "duracionMs": 1405,
+      "reintentos": 0
+    },
+    {
+      "prueba": "login conserva el destino y recupera la venta tras expirar la sesión",
+      "corrida": 3,
+      "estado": "expected",
+      "duracionMs": 1397,
+      "reintentos": 0
+    },
+    {
+      "prueba": "flujo integrado: cliente, catálogo, venta, stock, reportes y auditoría",
+      "corrida": 1,
+      "estado": "expected",
+      "duracionMs": 5564,
+      "reintentos": 0
+    },
+    {
+      "prueba": "flujo integrado: cliente, catálogo, venta, stock, reportes y auditoría",
+      "corrida": 2,
+      "estado": "expected",
+      "duracionMs": 4010,
+      "reintentos": 0
+    },
+    {
+      "prueba": "flujo integrado: cliente, catálogo, venta, stock, reportes y auditoría",
+      "corrida": 3,
+      "estado": "expected",
+      "duracionMs": 4641,
+      "reintentos": 0
+    },
+    {
+      "prueba": "productos y ventas conservan paginación y reinician al filtrar",
+      "corrida": 1,
+      "estado": "expected",
+      "duracionMs": 3937,
+      "reintentos": 0
+    },
+    {
+      "prueba": "productos y ventas conservan paginación y reinician al filtrar",
+      "corrida": 2,
+      "estado": "expected",
+      "duracionMs": 2720,
+      "reintentos": 0
+    },
+    {
+      "prueba": "productos y ventas conservan paginación y reinician al filtrar",
+      "corrida": 3,
+      "estado": "expected",
+      "duracionMs": 3454,
+      "reintentos": 0
+    },
+    {
+      "prueba": "el almacenero no ve Ventas y la URL directa es denegada",
+      "corrida": 1,
+      "estado": "expected",
+      "duracionMs": 1570,
+      "reintentos": 0
+    },
+    {
+      "prueba": "el almacenero no ve Ventas y la URL directa es denegada",
+      "corrida": 2,
+      "estado": "expected",
+      "duracionMs": 1427,
+      "reintentos": 0
+    },
+    {
+      "prueba": "el almacenero no ve Ventas y la URL directa es denegada",
+      "corrida": 3,
+      "estado": "expected",
+      "duracionMs": 1929,
+      "reintentos": 0
+    },
+    {
+      "prueba": "el vendedor ve Productos sin edición ni acceso a auditoría",
+      "corrida": 1,
+      "estado": "expected",
+      "duracionMs": 1349,
+      "reintentos": 0
+    },
+    {
+      "prueba": "el vendedor ve Productos sin edición ni acceso a auditoría",
+      "corrida": 2,
+      "estado": "expected",
+      "duracionMs": 1207,
+      "reintentos": 0
+    },
+    {
+      "prueba": "el vendedor ve Productos sin edición ni acceso a auditoría",
+      "corrida": 3,
+      "estado": "expected",
+      "duracionMs": 2011,
+      "reintentos": 0
+    }
+  ],
+  "corridas": [
+    {
+      "corrida": 1,
+      "aprobadas": 7,
+      "total": 7
+    },
+    {
+      "corrida": 2,
+      "aprobadas": 7,
+      "total": 7
+    },
+    {
+      "corrida": 3,
+      "aprobadas": 7,
+      "total": 7
+    }
+  ]
+}
