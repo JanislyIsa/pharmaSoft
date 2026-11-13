@@ -6,7 +6,7 @@ Jatniel Jair Suarez Vigo · 12/11/2026
 
 Se creó `feature/integracion-estabilizacion-suarez` en backend y frontend, tomando como base `origin/develop`. Después se integró el avance de S13 para conservar las funciones que ya estaban terminadas.
 
-Las dos carpetas locales están en esa rama. Los cambios y commits de este avance son locales; todavía no se han publicado en GitHub.
+Las dos carpetas locales están en esa rama. Las ramas se publicaron el 13/11/2026: backend PR #4 y frontend PR #5 hacia develop.
 
 ## Paso 2. Cargar volumen de prueba y medir la línea base
 
