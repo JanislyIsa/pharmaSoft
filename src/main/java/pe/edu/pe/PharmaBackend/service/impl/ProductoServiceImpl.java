@@ -1,5 +1,7 @@
 package pe.edu.pe.PharmaBackend.service.impl;
 
+import org.springframework.context.ApplicationEventPublisher;
+import pe.edu.pe.PharmaBackend.auditoria.EventoAuditoria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,11 +23,13 @@ import pe.edu.pe.PharmaBackend.service.service.ProductoService;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
+    private final ApplicationEventPublisher eventos;
     private static final Logger LOG = LoggerFactory.getLogger(ProductoServiceImpl.class);
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
 
-    public ProductoServiceImpl(ProductoRepository productoRepository, CategoriaRepository categoriaRepository){
+    public ProductoServiceImpl(ProductoRepository productoRepository, CategoriaRepository categoriaRepository, ApplicationEventPublisher eventos){
+        this.eventos = eventos;
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
     }
@@ -44,7 +48,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setStock(t.getStock());
         producto.setEstado(t.getEstado());
         producto.setCategoria(buscarCategoriaPorId(t.getCategoriaId()));
-        Producto prodCreada = productoRepository.save(producto);
+        Producto prodCreada = productoRepository.saveAndFlush(producto);
         LOG.info("Producto creado con id={}", prodCreada.getId());
         return convertirResponse(prodCreada);
     }
@@ -65,6 +69,7 @@ public class ProductoServiceImpl implements ProductoService {
         Producto producto = productoRepository.findById(aLong).orElseThrow(() ->
                 new RecursoNoEncontradoException("Producto no encontrado con id: " + aLong));
 
+        var precioAnterior = producto.getPrecio();
         String nombre = t.getNombre().trim();
         if (productoRepository.existsByNombreIgnoreCaseAndIdNot(nombre, aLong)) {
             throw new ReglaNegocioException("Ya existe un producto con el nombre " + nombre);
@@ -76,7 +81,11 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setEstado(t.getEstado());
         producto.setCategoria(buscarCategoriaPorId(t.getCategoriaId()));
 
-        Producto prodActualizada = productoRepository.save(producto);
+        Producto prodActualizada = productoRepository.saveAndFlush(producto);
+        if (precioAnterior.compareTo(prodActualizada.getPrecio()) != 0) {
+            eventos.publishEvent(EventoAuditoria.de("PRECIO_MODIFICADO", "Producto", aLong,
+                    precioAnterior + " -> " + prodActualizada.getPrecio()));
+        }
         LOG.info("Producto id={} actualizado", prodActualizada.getId());
         return convertirResponse(prodActualizada);
     }
@@ -99,8 +108,9 @@ public class ProductoServiceImpl implements ProductoService {
         if (Boolean.FALSE.equals(producto.getEstado())) {
             throw new ReglaNegocioException("El producto ya está inactivo.");
         }
+        eventos.publishEvent(EventoAuditoria.de("PRODUCTO_ELIMINADO", "Producto", aLong, producto.getNombre()));
         producto.setEstado(false);
-        productoRepository.save(producto);
+        productoRepository.saveAndFlush(producto);
         LOG.info("Producto id={} dado de baja", aLong);
     }
 
@@ -130,8 +140,16 @@ public class ProductoServiceImpl implements ProductoService {
         );
     }
 
+    @Override
+    @Transactional(readOnly=true)
+    public PaginaResponseDTO<ProductoResponseDTO> buscarVendibles(String texto, Pageable pageable) {
+        var p=productoRepository.buscarVendibles(texto, pageable).map(this::convertirResponse);
+        return new PaginaResponseDTO<>(p.getContent(),p.getNumber(),p.getSize(),p.getTotalElements(),p.getTotalPages(),p.isLast());
+    }
     private ProductoResponseDTO convertirResponse(Producto producto){
         return new ProductoResponseDTO(
+                producto.getCreadoPor(),
+                producto.getModificadoPor(),
                 producto.getId(),
                 producto.getNombre(),
                 producto.getPrecio(),

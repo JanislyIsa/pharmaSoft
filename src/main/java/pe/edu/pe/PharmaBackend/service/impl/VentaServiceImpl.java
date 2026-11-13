@@ -1,5 +1,7 @@
 package pe.edu.pe.PharmaBackend.service.impl;
 
+import org.springframework.context.ApplicationEventPublisher;
+import pe.edu.pe.PharmaBackend.auditoria.EventoAuditoria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,6 +33,7 @@ import java.util.List;
 
 @Service
 public class VentaServiceImpl implements VentaService {
+    private final ApplicationEventPublisher eventos;
 
     private static final Logger log = LoggerFactory.getLogger(VentaServiceImpl.class);
 
@@ -41,7 +44,8 @@ public class VentaServiceImpl implements VentaService {
     public VentaServiceImpl(
             VentaRepository ventaRepository,
             ClienteRepository clienteRepository,
-            ProductoRepository productoRepository) {
+            ProductoRepository productoRepository, ApplicationEventPublisher eventos) {
+        this.eventos = eventos;
 
         this.ventaRepository = ventaRepository;
         this.clienteRepository = clienteRepository;
@@ -115,6 +119,8 @@ public class VentaServiceImpl implements VentaService {
         venta.setTotal(total);
 
         Venta guardada = ventaRepository.save(venta);
+        eventos.publishEvent(EventoAuditoria.de("VENTA_REGISTRADA", "Venta", guardada.getId(),
+                "total=" + guardada.getTotal() + " | items=" + guardada.getDetalles().size()));
 
         log.info("Venta registrada con éxito. ventaId={}, total={}", guardada.getId(), guardada.getTotal());
 
@@ -184,6 +190,7 @@ public class VentaServiceImpl implements VentaService {
         String clienteNombre = venta.getCliente().getNombres() + " " + venta.getCliente().getApellidos();
 
         return new VentaResponseDTO(
+                venta.getCreadoPor(),
                 venta.getId(),
                 venta.getFecha(),
                 venta.getCliente().getId(),

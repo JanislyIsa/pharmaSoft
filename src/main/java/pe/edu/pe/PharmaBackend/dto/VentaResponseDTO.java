@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 public class VentaResponseDTO {
 
+    private String creadoPor;
     private Long id;
     private LocalDateTime fecha;
 

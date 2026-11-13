@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ProductoResponseDTO implements Serializable {
     private static final long serialVersionUID = 1L;
+    private String creadoPor;
+    private String modificadoPor;
     private Long id;
     private String nombre;
     private BigDecimal precio;

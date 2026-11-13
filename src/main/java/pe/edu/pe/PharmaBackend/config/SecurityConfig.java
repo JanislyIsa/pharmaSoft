@@ -88,7 +88,7 @@ public class SecurityConfig {
                         .hasAuthority(VENTAS_REGISTRAR.name())
 
                         // Administracion de la seguridad
-                        .requestMatchers("/api/v1/usuarios/**", "/api/v1/empleados/**", "/api/v1/roles/**")
+                        .requestMatchers("/api/v1/usuarios/**", "/api/v1/empleados/**", "/api/v1/roles/**", "/api/v1/auditoria", "/api/v1/auditoria/**")
                         .hasAuthority(USUARIOS_ADMINISTRAR.name())
 
                         // Todo lo demas

@@ -28,12 +28,12 @@ public class ProductoController {
     @GetMapping
     public ResponseEntity<PaginaResponseDTO<ProductoResponseDTO>> findAll(
             @RequestParam(defaultValue = "0") int pagina,
-            @RequestParam(defaultValue = "10") int tamanio,
+            @RequestParam(defaultValue = "20") int tamanio,
             @RequestParam(defaultValue = "nombre") String ordenarPor,
             @RequestParam(defaultValue = "asc") String direccion) {
 
-        if (pagina < 0 || tamanio < 1) {
-            throw new ReglaNegocioException("La página debe ser mayor o igual a 0 y el tamaño mayor a 0.");
+        if (pagina < 0 || tamanio < 1 || tamanio > 100) {
+            throw new ReglaNegocioException("La página debe ser mayor o igual a 0 y el tamaño estar entre 1 y 100.");
         }
         if (!CAMPOS_ORDENABLES.contains(ordenarPor)) {
             throw new ReglaNegocioException("Campo de orden inválido. Use: id, nombre, precio o stock.");
@@ -46,8 +46,14 @@ public class ProductoController {
             throw new ReglaNegocioException("Dirección inválida. Use asc o desc.");
         }
 
-        Pageable pageable = PageRequest.of(pagina, tamanio, Sort.by(sentido, ordenarPor));
+        Sort orden = Sort.by(sentido, ordenarPor).and(Sort.by(sentido, "id"));
+        Pageable pageable = PageRequest.of(pagina, tamanio, orden);
         return ResponseEntity.ok(productoService.listar(pageable));
+    }
+    @GetMapping("/buscar")
+    public PaginaResponseDTO<ProductoResponseDTO> buscarVendibles(@RequestParam(defaultValue="") String texto) {
+        if (texto.length()>150) throw new ReglaNegocioException("La búsqueda admite hasta 150 caracteres.");
+        return productoService.buscarVendibles(texto.trim(), PageRequest.of(0,20,Sort.by("nombre","id")));
     }
     @GetMapping("/{id}")
     public ResponseEntity<ProductoResponseDTO> findById(@PathVariable Long id){

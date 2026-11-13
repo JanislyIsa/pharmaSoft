@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ClienteResponseDTO {
+    private String creadoPor;
+    private String modificadoPor;
     private Long id;
     private String dni;
     private String nombres;
