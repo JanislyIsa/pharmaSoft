@@ -21,7 +21,7 @@ Jatniel Jair Suarez Vigo. Actividad autónoma S14. Actualización: 15/11/2026.
 
 | Etapa | Contenido |
 |---|---|
-| [Unidad I: backend](evidencias/u1-backend/README.md) | Validación actual de API. No se encontraron capturas originales identificadas de sesiones 1 a 5; deben añadirse si se solicitan. |
+| [Unidad I: backend](evidencias/u1-backend/README.md) | Trece capturas originales del informe de agosto y de S04/S05, con procedencia; validación actual separada. |
 | [Unidad II: SPA segura](evidencias/u2-spa-segura/README.md) | Comprobante y stock históricos de S11, conservando procedencia. |
 | [S13: optimización](evidencias/s13-optimizacion/README.md) | Analizador, cinco módulos, matriz de caché y venta histórica. |
 | [S14: estabilización](evidencias/s14-estabilizacion/README.md) | Suite 42/42, colección 26/26, trazabilidad, recorridos y video. |
@@ -33,4 +33,4 @@ Jatniel Jair Suarez Vigo. Actividad autónoma S14. Actualización: 15/11/2026.
 - [Frontend](https://github.com/JanislyIsa/pharma-frontend), [PR de integración](https://github.com/JanislyIsa/pharma-frontend/pull/5).
 - Versión a presentar: `v1.0-demo` en ambos repositorios. Las versiones exactas de las pruebas están en el JSON de resultados; los commits posteriores solo agregan evidencia y documentación, salvo el script del video.
 
-Pendientes personales: dos ensayos orales cronometrados, revisión de las respuestas con palabras propias, capturas originales de Unidad I si están disponibles y entrega en el aula virtual. Los tres recorridos del asistente y el video automatizado se identifican como tales; no se atribuyen al estudiante.
+Pendientes personales: dos ensayos orales cronometrados, revisión de las respuestas con palabras propias y entrega en el aula virtual. Los tres recorridos del asistente y el video automatizado se identifican como tales; no se atribuyen al estudiante.

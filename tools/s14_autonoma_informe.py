@@ -78,7 +78,8 @@ def main():
     add('Se organizó docs/ con índice, arquitectura, auditoría, incidencias, resultados, guion, checklist, diez respuestas con referencias al código y carpetas por unidad/S13/S14. '+link('Índice de evidencias',base+'README.md')+' · '+link('Arquitectura',base+'arquitectura.png')+' · '+link('Defensa técnica',base+'defensa-tecnica.md')+'.','small')
     add('Parte F. Versionamiento y entrega','h')
     add('Ambos repositorios tienen commits reales en al menos tres días distintos y versión v1.0-demo. '+link('Backend','https://github.com/JanislyIsa/pharmaSoft/tree/v1.0-demo')+' · '+link('Frontend','https://github.com/JanislyIsa/pharma-frontend/tree/v1.0-demo')+'. Las ramas de integración y los PR se conservan para revisión.','small')
-    add('<b>Pendiente del estudiante:</b> hacer dos ensayos orales cronometrados con el guion, revisar las respuestas con sus propias palabras, añadir las capturas originales de sesiones 1 a 5 si las tiene y subir este PDF al aula virtual. La carpeta Unidad I contiene validación actual, identificada como tal.','small')
+    add('Unidad I: se recuperaron trece capturas originales del informe técnico de agosto y de S04/S05. Se conservaron sin editar, con procedencia; la validación actual está separada.','small')
+    add('<b>Pendiente del estudiante:</b> hacer dos ensayos orales cronometrados con el guion, revisar las respuestas con sus propias palabras y subir este PDF al aula virtual.','small')
     P.parent.mkdir(parents=True,exist_ok=True)
     def footer(c,doc):
         c.setFont('Arial',8);c.setFillColor(GRAY);c.drawRightString(A4[0]-42,23,str(doc.page))

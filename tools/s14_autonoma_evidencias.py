@@ -92,7 +92,8 @@ def main():
         (carpeta/'README.md').write_text('# Evidencias conservadas\n\n'+ '\n'.join(origen)+'\n\nSe conserva la fecha y contenido original; no son capturas nuevas del 15/11.\n',encoding='utf-8')
     u1=ROOT/'docs/evidencias/u1-backend';u1.mkdir(exist_ok=True)
     shutil.copy2(OUT/'postman-resultados.png',u1/'validacion-actual-api.png')
-    (u1/'README.md').write_text('# Backend\n\n[Validación actual de la API](validacion-actual-api.png), realizada el 15/11/2026.\n\nNo se localizaron capturas originales identificadas de las sesiones 1 a 5. Esta reconstrucción actual no se presenta como evidencia histórica. Añadir aquí esas capturas originales si el docente las exige.\n',encoding='utf-8')
+    if not (u1/'procedencia.json').exists():
+        (u1/'README.md').write_text('# Backend\n\n[Validación actual de la API](validacion-actual-api.png), realizada el 15/11/2026.\n\nEvidencia actual; las capturas históricas se indexan por separado cuando están disponibles.\n',encoding='utf-8')
     print('Evidencias: Playwright 42/42, Postman 26/26 y venta trazada',venta,datos['requestId'])
 
 if __name__=='__main__':main()
