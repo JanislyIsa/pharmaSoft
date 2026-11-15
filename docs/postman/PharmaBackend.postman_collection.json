@@ -1,0 +1,605 @@
+{
+  "info": {
+    "name": "PharmaBackend S14 - regresión local",
+    "description": "Ejecutar solo en la base local de demostración. Crea datos sintéticos nuevos. Variables secretas del entorno: adminPassword y vendedorPassword; no exportarlas ni guardar tokens. El 409 comprueba que el stock sigue en 2. La anulación cambia el estado según el contrato existente; no representa una devolución de inventario.",
+    "_postman_id": "fda902e0-4d1c-4536-b389-000000000014",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{tokenAdmin}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.environment.get(\"marca\")) { pm.environment.set(\"marca\", Date.now()+\"-\"+Math.floor(Math.random()*100000)); pm.environment.set(\"dni\", String(Math.floor(10000000+Math.random()*89999999))); }"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Login administrador",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/auth/login",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"admin\", \"password\": \"{{adminPassword}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.environment.set(\"tokenAdmin\", pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Login vendedor",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/auth/login",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"vendedor\", \"password\": \"{{vendedorPassword}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.environment.set(\"tokenVendedor\", pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Categoría de prueba",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/categorias",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"S14 Postman {{marca}}\", \"descripcion\": \"Datos sint\\u00e9ticos\", \"estado\": true}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"categoriaId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Cliente nuevo",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/clientes",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"dni\": \"{{dni}}\", \"nombres\": \"Postman\", \"apellidos\": \"S14 {{marca}}\", \"email\": \"s14-{{marca}}@example.test\", \"estado\": true}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"clienteId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Producto stock tres",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/productos",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"S14 Postman {{marca}}\", \"precio\": 10, \"stock\": 3, \"estado\": true, \"categoriaId\": \"{{categoriaId}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"productoId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Página productos",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/productos?pagina=0&tamanio=20",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Paginación de servidor\", () => { const p=pm.response.json(); pm.expect(p.contenido.length).to.be.at.most(20); pm.expect(p.totalElementos).to.be.above(5000); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Venta válida",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/ventas",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"clienteId\": \"{{clienteId}}\", \"detalles\": [{\"productoId\": \"{{productoId}}\", \"cantidad\": 1}]}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"ventaId\", pm.response.json().id); pm.environment.set(\"ventaRequestId\", pm.response.headers.get(\"X-Request-Id\")); pm.test(\"Total calculado por servidor\", () => pm.expect(pm.response.json().total).to.eql(10));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 Stock descontado",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/productos/{{productoId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Stock 3 a 2\", () => pm.expect(pm.response.json().stock).to.eql(2));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 Auditoría venta",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/auditoria?accion=VENTA_REGISTRADA&usuario=admin",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Venta y correlación\", () => pm.expect(pm.response.json().contenido.some(e => e.entidadId == pm.environment.get(\"ventaId\") && e.requestId === pm.environment.get(\"ventaRequestId\"))).to.eql(true));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 Venta vacía",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/ventas",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"clienteId\": \"{{clienteId}}\", \"detalles\": []}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 Productos sin token",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/productos",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 Auditoría vendedor",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/auditoria",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenVendedor}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 Producto inexistente",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/productos/999999999",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 Venta sin stock",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/ventas",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"clienteId\": \"{{clienteId}}\", \"detalles\": [{\"productoId\": \"{{productoId}}\", \"cantidad\": 9999}]}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 Fallo conserva stock",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/productos/{{productoId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"409 no descuenta stock\", () => pm.expect(pm.response.json().stock).to.eql(2));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 Anular venta",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/ventas/{{ventaId}}/anular",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.environment.set(\"anularRequestId\", pm.response.headers.get(\"X-Request-Id\")); pm.test(\"Estado anulado\", () => pm.expect(pm.response.json().estado).to.eql(\"ANULADA\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 Auditoría anulación",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/auditoria?accion=VENTA_ANULADA",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Anulación confirmada\", () => pm.expect(pm.response.json().contenido.some(e => e.entidadId == pm.environment.get(\"ventaId\") && e.requestId === pm.environment.get(\"anularRequestId\"))).to.eql(true));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18 Auditoría alta cliente",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/auditoria?accion=CLIENTE_REGISTRADO",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Alta sin datos personales\", () => { const e=pm.response.json().contenido.find(e => e.entidadId == pm.environment.get(\"clienteId\")); pm.expect(e).to.exist; pm.expect(e.detalle).not.to.include(pm.environment.get(\"dni\")); pm.expect(e.detalle).not.to.include(\"@\"); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

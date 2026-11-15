@@ -2,6 +2,8 @@
 
 API REST de PharmaSoft. Spring Boot, Oracle y Redis.
 
+Actividad autónoma S14: [índice, video, auditoría, pruebas y guion](docs/README.md). [Informe breve](output/pdf/Suarez_LP2_S14_Autonoma.pdf).
+
 Informe de la actividad autónoma: [docs/informe-s13.pdf](docs/informe-s13.pdf).
 
 ## Despliegue en producción
@@ -27,7 +29,7 @@ Nginx sirve Angular y reenvía `/api/` al backend. El navegador usa el mismo ori
 
 Inyectar los valores con el gestor de secretos del entorno. No reutilizar las credenciales de desarrollo. Para el laboratorio, colocar los dos repositorios como carpetas hermanas.
 
-1. **Construir y conservar la versión.** En backend, con Java 21, ejecutar `.\mvnw.cmd clean verify` con Oracle y Redis de prueba disponibles. Conservar el JAR y su commit. En frontend ejecutar `pnpm install --frozen-lockfile` y `pnpm exec ng build --configuration production --stats-json`. Conservar una copia de `dist/pharma-frontend/browser` por versión.
+1. **Construir y conservar la versión.** En backend, con Java 21, ejecutar `.\mvnw.cmd clean verify` con Oracle y Redis de prueba disponibles. Conservar el JAR y su commit. En frontend ejecutar `npm.cmd ci` y `npm.cmd run build -- --stats-json` usando package-lock.json. Conservar una copia de `dist/pharma-frontend/browser` por versión.
 2. **Desplegar.** En `pharma-frontend/deploy` iniciar Redis con `docker compose up -d redis`. Arrancar el JAR con el perfil y variables de producción. Con `SPA_DIST` apuntando a la nueva versión, ejecutar `docker compose up -d --no-deps web` y `docker compose exec web nginx -t`. Para actualizar, publicar todos los archivos de la versión antes de servir su `index.html`.
 3. **Verificar.** Comprobar `/actuator/health`, autenticarse y consultar Productos y Ventas. Recargar una ruta interna; confirmar `index.html: no-cache`, JS/CSS con hash e `immutable` y API con `no-store`. Una cuenta sin permiso debe recibir 403 en métricas.
 4. **Revertir.** Si falla el frontend, volver a apuntar `SPA_DIST` a la versión anterior y recrear solo `web` con `docker compose up -d --no-deps --force-recreate web`. Si falla el backend, reiniciar con el JAR anterior y sus variables, previa comprobación de compatibilidad con las migraciones Oracle. Restaurar un respaldo de Oracle solo con un plan aprobado de recuperación. Repetir salud, login y consultas; conservar los archivos con hash de la versión anterior durante la transición.

@@ -1,0 +1,27 @@
+[WebServer] npm warn Unknown project config "node-linker". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+[WebServer] npm warn Unknown project config "package-import-method". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+[WebServer] (node:464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:12484) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [chromium] › e2e\autenticacion.spec.ts:3:1 › una ruta protegida lleva al login con returnUrl (1.0s)
+  ok  2 [chromium] › e2e\autenticacion.spec.ts:6:1 › credenciales incorrectas muestran el mensaje del backend (1.5s)
+  ok  3 [chromium] › e2e\autenticacion.spec.ts:12:1 › login conserva el destino y recupera la venta tras expirar la sesión (2.1s)
+  ok  4 [chromium] › e2e\autonoma.spec.ts:28:1 › E2E-08 stock cambiado por otro usuario muestra 409 sin registrar venta (2.9s)
+  ok  5 [chromium] › e2e\autonoma.spec.ts:44:1 › E2E-09 venta vacía no abre confirmación y la API devuelve 400 (1.3s)
+  ok  6 [chromium] › e2e\autonoma.spec.ts:53:1 › E2E-10 cliente recién creado se usa de inmediato y su alta se audita (2.6s)
+  ok  7 [chromium] › e2e\autonoma.spec.ts:66:1 › E2E-11 fechas desde página tres vuelven al inicio y persisten al recargar (1.7s)
+  ok  8 [chromium] › e2e\autonoma.spec.ts:76:1 › E2E-12 admin consulta venta y anulación confirmadas con filtros en URL (1.8s)
+  ok  9 [chromium] › e2e\autonoma.spec.ts:94:1 › E2E-13 vendedor no tiene menú Auditoría ni acceso por URL (1.2s)
+  ok 10 [chromium] › e2e\autonoma.spec.ts:101:1 › E2E-14 token alterado provoca 401 y retorno al login con aviso (1.4s)
+  ok 11 [chromium] › e2e\flujo-venta.spec.ts:3:1 › flujo integrado: cliente, catálogo, venta, stock, reportes y auditoría (5.3s)
+  ok 12 [chromium] › e2e\paginacion.spec.ts:3:1 › productos y ventas conservan paginación y reinician al filtrar (2.4s)
+  ok 13 [chromium] › e2e\permisos.spec.ts:3:1 › el almacenero no ve Ventas y la URL directa es denegada (1.3s)
+  ok 14 [chromium] › e2e\permisos.spec.ts:8:1 › el vendedor ve Productos sin edición ni acceso a auditoría (1.0s)
+
+  14 passed (38.5s)
