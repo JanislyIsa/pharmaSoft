@@ -32,7 +32,7 @@ La tabla anterior conserva causas, correcciones y commits reales. Se completa co
 - Reproducir: ejecutar Playwright sin el navegador descargado en el perfil de Windows.
 - Esperado: abrir Chromium. Obtenido: 42 errores de arranque, `Executable doesn't exist`; ningún flujo llegó a ejecutarse.
 - Causa raíz: caché de navegadores ausente tras recuperar el equipo. No era un fallo intermitente del sistema.
-- Corrección: `npx.cmd playwright install chromium`. No corresponde un commit de binarios; la instrucción queda en `checklist-demo.md`, commit documental de autónoma identificable en el tag v1.0-demo.
+- Corrección: `npx.cmd playwright install chromium`. No se versionan los binarios externos; se documentó el requisito en `checklist-demo.md`, commit BE `e499795`.
 - Regresión: las siguientes corridas abren el navegador. Diagnóstico sanitizado en `evidencias/s14-estabilizacion/diagnosticos.json`.
 
 ## INC-08 - Etiqueta del filtro Acción

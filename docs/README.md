@@ -13,6 +13,7 @@ Jatniel Jair Suarez Vigo. Actividad autónoma S14. Actualización: 15/11/2026.
 - [Tres recorridos por interfaz](verificacion-flujo.md).
 - [Diez respuestas de defensa](defensa-tecnica.md).
 - [Colección Postman ejecutable](postman/PharmaBackend.postman_collection.json).
+- [Historial y versión de demostración](versionamiento.md).
 - [Informe breve de la actividad](../output/pdf/Suarez_LP2_S14_Autonoma.pdf).
 - [Video técnico de respaldo](evidencias/s14-estabilizacion/demo-respaldo.mp4).
 
