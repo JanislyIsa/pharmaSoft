@@ -169,6 +169,8 @@ public class VentaServiceImpl implements VentaService {
         }
 
         venta.setEstado(EstadoVenta.ANULADA);
+        eventos.publishEvent(EventoAuditoria.de("VENTA_ANULADA", "Venta", venta.getId(),
+                "Estado ANULADA; total=" + venta.getTotal()));
 
         log.info("Venta anulada con éxito. ventaId={}", id);
 
