@@ -1,0 +1,15 @@
+Maven
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.071 s -- in pe.edu.pe.PharmaBackend.config.RequestIdFilterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.878 s -- in pe.edu.pe.PharmaBackend.controller.PaginacionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.078 s -- in pe.edu.pe.PharmaBackend.exception.ErrorTrackingTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 66.62 s -- in pe.edu.pe.PharmaBackend.PharmaBackendApplicationTests
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.386 s -- in pe.edu.pe.PharmaBackend.security.JwtServiceTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in pe.edu.pe.PharmaBackend.security.PermisosPorRolTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Angular
+                    | Initial total    | 313.56 kB |                88.33 kB
+Application bundle generation complete. [5.468 seconds] - 2026-11-12T14:35:12.915Z
+▲ [WARNING] src/app/features/ventas/pages/venta-form/venta-form.css exceeded maximum budget. Budget 4.00 kB was not met by 57 bytes with a total of 4.06 kB.
+Output location: C:\Users\jatni\Downloads\pharma-frontend\dist\pharma-frontend

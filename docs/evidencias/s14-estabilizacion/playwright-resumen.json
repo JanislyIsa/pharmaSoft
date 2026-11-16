@@ -1,0 +1,313 @@
+{
+  "fecha": "2026-11-15T18:07:11.298456-05:00",
+  "versiones": {
+    "backend": "953f7cf901dc4b1f3429a2b9ec7951e138f2c43c",
+    "frontend": "5809bc45f19cdd9cec951a32fc9e21a9dd562a37"
+  },
+  "stats": {
+    "startTime": "2026-11-15T22:58:49.529Z",
+    "duration": 75609.37700000001,
+    "expected": 42,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "workers": 1,
+  "retries": 0,
+  "casos": [
+    {
+      "prueba": "una ruta protegida lleva al login con returnUrl",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 965,
+      "retry": 0
+    },
+    {
+      "prueba": "una ruta protegida lleva al login con returnUrl",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 559,
+      "retry": 0
+    },
+    {
+      "prueba": "una ruta protegida lleva al login con returnUrl",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 540,
+      "retry": 0
+    },
+    {
+      "prueba": "credenciales incorrectas muestran el mensaje del backend",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 938,
+      "retry": 0
+    },
+    {
+      "prueba": "credenciales incorrectas muestran el mensaje del backend",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 670,
+      "retry": 0
+    },
+    {
+      "prueba": "credenciales incorrectas muestran el mensaje del backend",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 692,
+      "retry": 0
+    },
+    {
+      "prueba": "login conserva el destino y recupera la venta tras expirar la sesión",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1217,
+      "retry": 0
+    },
+    {
+      "prueba": "login conserva el destino y recupera la venta tras expirar la sesión",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 914,
+      "retry": 0
+    },
+    {
+      "prueba": "login conserva el destino y recupera la venta tras expirar la sesión",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 980,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-08 stock cambiado por otro usuario muestra 409 sin registrar venta",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 2261,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-08 stock cambiado por otro usuario muestra 409 sin registrar venta",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 2080,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-08 stock cambiado por otro usuario muestra 409 sin registrar venta",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 2188,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-09 venta vacía no abre confirmación y la API devuelve 400",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1001,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-09 venta vacía no abre confirmación y la API devuelve 400",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 779,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-09 venta vacía no abre confirmación y la API devuelve 400",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 1355,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-10 cliente recién creado se usa de inmediato y su alta se audita",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1922,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-10 cliente recién creado se usa de inmediato y su alta se audita",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 2121,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-10 cliente recién creado se usa de inmediato y su alta se audita",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 2521,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-11 fechas desde página tres vuelven al inicio y persisten al recargar",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1289,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-11 fechas desde página tres vuelven al inicio y persisten al recargar",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 1422,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-11 fechas desde página tres vuelven al inicio y persisten al recargar",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 1389,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-12 admin consulta venta y anulación confirmadas con filtros en URL",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1323,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-12 admin consulta venta y anulación confirmadas con filtros en URL",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 1642,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-12 admin consulta venta y anulación confirmadas con filtros en URL",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 1688,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-13 vendedor no tiene menú Auditoría ni acceso por URL",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1078,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-13 vendedor no tiene menú Auditoría ni acceso por URL",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 990,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-13 vendedor no tiene menú Auditoría ni acceso por URL",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 870,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-14 token alterado provoca 401 y retorno al login con aviso",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1293,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-14 token alterado provoca 401 y retorno al login con aviso",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 1102,
+      "retry": 0
+    },
+    {
+      "prueba": "E2E-14 token alterado provoca 401 y retorno al login con aviso",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 1062,
+      "retry": 0
+    },
+    {
+      "prueba": "flujo integrado: cliente, catálogo, venta, stock, reportes y auditoría",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 4078,
+      "retry": 0
+    },
+    {
+      "prueba": "flujo integrado: cliente, catálogo, venta, stock, reportes y auditoría",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 3055,
+      "retry": 0
+    },
+    {
+      "prueba": "flujo integrado: cliente, catálogo, venta, stock, reportes y auditoría",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 3430,
+      "retry": 0
+    },
+    {
+      "prueba": "productos y ventas conservan paginación y reinician al filtrar",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1884,
+      "retry": 0
+    },
+    {
+      "prueba": "productos y ventas conservan paginación y reinician al filtrar",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 1741,
+      "retry": 0
+    },
+    {
+      "prueba": "productos y ventas conservan paginación y reinician al filtrar",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 2111,
+      "retry": 0
+    },
+    {
+      "prueba": "el almacenero no ve Ventas y la URL directa es denegada",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 1125,
+      "retry": 0
+    },
+    {
+      "prueba": "el almacenero no ve Ventas y la URL directa es denegada",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 937,
+      "retry": 0
+    },
+    {
+      "prueba": "el almacenero no ve Ventas y la URL directa es denegada",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 1372,
+      "retry": 0
+    },
+    {
+      "prueba": "el vendedor ve Productos sin edición ni acceso a auditoría",
+      "repeticion": 1,
+      "estado": "passed",
+      "duracionMs": 939,
+      "retry": 0
+    },
+    {
+      "prueba": "el vendedor ve Productos sin edición ni acceso a auditoría",
+      "repeticion": 2,
+      "estado": "passed",
+      "duracionMs": 779,
+      "retry": 0
+    },
+    {
+      "prueba": "el vendedor ve Productos sin edición ni acceso a auditoría",
+      "repeticion": 3,
+      "estado": "passed",
+      "duracionMs": 1652,
+      "retry": 0
+    }
+  ]
+}

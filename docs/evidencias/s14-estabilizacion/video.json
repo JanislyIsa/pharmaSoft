@@ -1,0 +1,38 @@
+{
+  "fecha": "2026-11-15T23:17:00.410Z",
+  "segundos": 215,
+  "bloques": [
+    {
+      "nombre": "Contexto",
+      "segundo": 0
+    },
+    {
+      "nombre": "Flujo principal",
+      "segundo": 16
+    },
+    {
+      "nombre": "Seguridad",
+      "segundo": 55
+    },
+    {
+      "nombre": "Volumen y rendimiento",
+      "segundo": 77
+    },
+    {
+      "nombre": "Auditoría",
+      "segundo": 105
+    },
+    {
+      "nombre": "Calidad",
+      "segundo": 134
+    }
+  ],
+  "ventaId": 22444,
+  "requestId": "10efa363",
+  "modalidad": "Recorrido técnico automatizado de la SPA de producción y evidencia real; sin narración personal.",
+  "archivo": "demo-respaldo.mp4",
+  "segundosRecorrido": 205,
+  "duracionVideoSegundos": 214.92,
+  "bytes": 2072620,
+  "nota": "Los marcadores de bloques se midieron durante las acciones; la duración final se midió con ffprobe."
+}

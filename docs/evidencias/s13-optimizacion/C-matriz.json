@@ -1,0 +1,38 @@
+[
+  {
+    "id": "C-01",
+    "passed": true,
+    "categoriaId": 163,
+    "cacheAfterWrite": "0",
+    "nombreVisible": "AA S13 Auto Categoria 1108183923"
+  },
+  {
+    "id": "C-02",
+    "passed": true,
+    "productoId": 122,
+    "categoriaNombre": "AA S13 Auto Categoria 1108183923 Edit"
+  },
+  {
+    "id": "C-03",
+    "passed": true,
+    "precioAntes": 3.25,
+    "precioDetalle": 4.5,
+    "precioLista": 4.5
+  },
+  {
+    "id": "C-05",
+    "passed": true,
+    "categoriaTemporalEliminadaId": 164,
+    "yaNoAparece": true,
+    "cacheAfterDelete": "0"
+  },
+  {
+    "id": "C-04",
+    "passed": true,
+    "ventaId": 161,
+    "productoId": 122,
+    "stockAntes": 8,
+    "stockListaDespues": 7,
+    "ventaDesde": "SPA"
+  }
+]

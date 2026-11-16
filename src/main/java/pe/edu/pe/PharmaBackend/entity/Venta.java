@@ -1,6 +1,9 @@
 package pe.edu.pe.PharmaBackend.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "ventas")
 @Getter
 @Setter
@@ -47,6 +51,11 @@ public class Venta {
             orphanRemoval = true
     )
     private List<DetalleVenta> detalles = new ArrayList<>();
+
+
+    @CreatedBy
+    @Column(name = "creado_por", length = 50, updatable = false)
+    private String creadoPor;
 
     @PrePersist
     public void prePersist() {

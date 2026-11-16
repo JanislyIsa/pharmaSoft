@@ -1,0 +1,4 @@
+{
+  "resultado": "Productos insertados=0\nVentas insertadas=0\nCliente de carga ID=41\nPRODUCTOS=5034\nVENTAS=20036",
+  "nota": "Tras aplicar V4, se rellenó creado_por=carga solo en los productos y ventas sintéticos S14; sin duplicar la carga."
+}

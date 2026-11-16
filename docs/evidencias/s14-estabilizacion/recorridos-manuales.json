@@ -1,0 +1,35 @@
+{
+  "preparacion": "Tres productos nuevos independientes con stock 20 y cliente sintético; sin vaciar datos existentes.",
+  "recorridos": [
+    {
+      "fecha": "2026-11-15T22:58:01.776Z",
+      "segundos": 121,
+      "ventaId": 22430,
+      "productoId": 22434,
+      "stockAntes": 20,
+      "stockDespues": 19,
+      "modalidad": "Interfaz operada por el asistente, sin el runner E2E",
+      "desvio": "Pausa para recopilar evidencia; incluida en el tiempo."
+    },
+    {
+      "fecha": "2026-11-15T22:59:15.691Z",
+      "segundos": 74,
+      "ventaId": 22435,
+      "productoId": 22435,
+      "stockAntes": 20,
+      "stockDespues": 19,
+      "modalidad": "Interfaz operada por el asistente, sin el runner E2E",
+      "desvio": "Pausa para contrastar pruebas; incluida en el tiempo."
+    },
+    {
+      "fecha": "2026-11-15T23:00:09.280Z",
+      "segundos": 41,
+      "ventaId": 22439,
+      "productoId": 22436,
+      "stockAntes": 20,
+      "stockDespues": 19,
+      "modalidad": "Interfaz operada por el asistente, sin el runner E2E",
+      "desvio": "Se amplió la página a 100 por altas concurrentes de la suite."
+    }
+  ]
+}

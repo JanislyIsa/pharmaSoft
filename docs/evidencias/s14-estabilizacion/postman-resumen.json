@@ -1,0 +1,83 @@
+{
+  "fecha": "2026-11-15",
+  "cli": "Postman CLI 1.90.0",
+  "solicitudes": [
+    {
+      "nombre": "01 Login administrador",
+      "http": 200
+    },
+    {
+      "nombre": "02 Login vendedor",
+      "http": 200
+    },
+    {
+      "nombre": "03 Categoría de prueba",
+      "http": 201
+    },
+    {
+      "nombre": "04 Cliente nuevo",
+      "http": 201
+    },
+    {
+      "nombre": "05 Producto stock tres",
+      "http": 201
+    },
+    {
+      "nombre": "06 Página productos",
+      "http": 200
+    },
+    {
+      "nombre": "07 Venta válida",
+      "http": 201
+    },
+    {
+      "nombre": "08 Stock descontado",
+      "http": 200
+    },
+    {
+      "nombre": "09 Auditoría venta",
+      "http": 200
+    },
+    {
+      "nombre": "10 Venta vacía",
+      "http": 400
+    },
+    {
+      "nombre": "11 Productos sin token",
+      "http": 401
+    },
+    {
+      "nombre": "12 Auditoría vendedor",
+      "http": 403
+    },
+    {
+      "nombre": "13 Producto inexistente",
+      "http": 404
+    },
+    {
+      "nombre": "14 Venta sin stock",
+      "http": 409
+    },
+    {
+      "nombre": "15 Fallo conserva stock",
+      "http": 200
+    },
+    {
+      "nombre": "16 Anular venta",
+      "http": 200
+    },
+    {
+      "nombre": "17 Auditoría anulación",
+      "http": 200
+    },
+    {
+      "nombre": "18 Auditoría alta cliente",
+      "http": 200
+    }
+  ],
+  "assertions": 26,
+  "failed": 0,
+  "durationMs": 2268,
+  "exitCode": 0,
+  "destino": "http://localhost:8080/api/v1"
+}

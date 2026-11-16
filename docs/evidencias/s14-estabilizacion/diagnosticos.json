@@ -1,0 +1,20 @@
+{
+  "entorno": {
+    "fecha": "2026-11-15",
+    "resultado": "42 fallos de arranque; Chromium no instalado",
+    "solucion": "playwright install chromium"
+  },
+  "selector": {
+    "resultado": "39 aprobadas, 3 fallidas",
+    "causa": "selectOption esperaba la etiqueta exacta Acción",
+    "trace": "locator.selectOption -> internal:label=\"Acción\"s; timeout 60000 ms",
+    "correccion": "aria-label Acción; frontend 5809bc4"
+  },
+  "verificacionPosterior": {
+    "aprobadas": 42,
+    "fallidas": 0,
+    "flaky": 0,
+    "retries": 0
+  },
+  "nota": "No se publican trazas con tráfico autenticado."
+}

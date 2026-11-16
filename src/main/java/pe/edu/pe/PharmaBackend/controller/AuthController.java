@@ -4,11 +4,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import pe.edu.pe.PharmaBackend.dto.auth.LoginRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.auth.LoginResponseDTO;
+import pe.edu.pe.PharmaBackend.dto.auth.CambioPasswordRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.auth.UsuarioResponseDTO;
 import pe.edu.pe.PharmaBackend.service.service.AuthService;
 @RestController
@@ -23,6 +26,7 @@ public class AuthController {
      * Credenciales incorrectas o usuario deshabilitado -> 401.
      */
     @PostMapping("/login")
+    @SecurityRequirements
     public ResponseEntity<LoginResponseDTO> login(
             @Valid @RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
@@ -34,5 +38,13 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UsuarioResponseDTO> me(Authentication authentication) {
         return ResponseEntity.ok(authService.usuarioActual(authentication.getName()));
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<Void> cambiarPassword(
+            Authentication authentication,
+            @Valid @RequestBody CambioPasswordRequestDTO request) {
+        authService.cambiarPassword(authentication.getName(), request);
+        return ResponseEntity.noContent().build();
     }
 }

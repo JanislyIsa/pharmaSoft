@@ -1,0 +1,9 @@
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.374 s -- in pe.edu.pe.PharmaBackend.auditoria.AuditoriaTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.158 s -- in pe.edu.pe.PharmaBackend.config.RequestIdFilterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.108 s -- in pe.edu.pe.PharmaBackend.controller.PaginacionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s -- in pe.edu.pe.PharmaBackend.exception.ErrorTrackingTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.24 s -- in pe.edu.pe.PharmaBackend.PharmaBackendApplicationTests
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.142 s -- in pe.edu.pe.PharmaBackend.security.JwtServiceTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in pe.edu.pe.PharmaBackend.security.PermisosPorRolTest
+[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS

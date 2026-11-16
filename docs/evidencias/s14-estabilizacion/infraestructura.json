@@ -1,0 +1,12 @@
+{
+  "ping": "PONG",
+  "clave": "productos::0-20-nombre: ASC,id: ASC",
+  "ttl": 599,
+  "health": {
+    "groups": [
+      "liveness",
+      "readiness"
+    ],
+    "status": "UP"
+  }
+}

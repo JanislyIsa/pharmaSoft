@@ -1,0 +1,22 @@
+[
+  {
+    "repositorio": "pharmaSoft",
+    "numero": 4,
+    "url": "https://github.com/JanislyIsa/pharmaSoft/pull/4",
+    "estado": "open",
+    "base": "develop",
+    "rama": "feature/integracion-estabilizacion-suarez",
+    "mergeable": null,
+    "headShaVerificadoAlCrearPR": "25b35ba5e53cc99090861025c96247b07023f59e"
+  },
+  {
+    "repositorio": "pharma-frontend",
+    "numero": 5,
+    "url": "https://github.com/JanislyIsa/pharma-frontend/pull/5",
+    "estado": "open",
+    "base": "develop",
+    "rama": "feature/integracion-estabilizacion-suarez",
+    "mergeable": null,
+    "headShaVerificadoAlCrearPR": "411acfbc1cb723c8f3e3b00883e2d6aef4fe4edc"
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "archivo": "Agosto-02.png",
+    "documento": "Informe_Tecnico_Backend_REST_Jatniel_Suarez_Vigo.docx",
+    "leyenda": "Tabla CATEGORIAS en Oracle, informe de agosto de 2026.",
+    "sha256Imagen": "6330b5e11560ce5e39f7f6da14e4dbc140e0af3fb1e678f8b9856b99f40d34ac",
+    "sha256DocumentoOrigen": "82cebea00f6cda0c38b7eae18933493202e793e571c5807d72bedf0b781381d8",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "Agosto-03.jpg",
+    "documento": "Informe_Tecnico_Backend_REST_Jatniel_Suarez_Vigo.docx",
+    "leyenda": "Swagger con endpoints de Categoría y Health, informe de agosto.",
+    "sha256Imagen": "51a5efdcf03f237d8e13096a724899a80809a3288a6a8bbb17e81d247820d6b0",
+    "sha256DocumentoOrigen": "82cebea00f6cda0c38b7eae18933493202e793e571c5807d72bedf0b781381d8",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "Agosto-05.jpg",
+    "documento": "Informe_Tecnico_Backend_REST_Jatniel_Suarez_Vigo.docx",
+    "leyenda": "Respuesta de creación de categoría, informe de agosto.",
+    "sha256Imagen": "dd83285414763331698082744742237d6d007795a67b88131cf9537b88abbf38",
+    "sha256DocumentoOrigen": "82cebea00f6cda0c38b7eae18933493202e793e571c5807d72bedf0b781381d8",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S04-07.png",
+    "documento": "Evidencias_S04_SuarezVigoJatniel.docx",
+    "leyenda": "Figura 4. Respuesta 400 Bad Request: \"La venta debe contener al menos un detalle\".",
+    "sha256Imagen": "812d28fcda348c3cda12ade53abd581d272f3cf353734e023132f77d7ab1101d",
+    "sha256DocumentoOrigen": "5d62a2ccd91b218d81cfc6b2b3d2779406dfb99a83ea4cc3d5955a01ffe50ec6",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S04-14.png",
+    "documento": "Evidencias_S04_SuarezVigoJatniel.docx",
+    "leyenda": "Figura 11. Respuesta 409 Conflict: \"Stock insuficiente para Azitromicina 250mg. Disponible: 38, solicitado: 9999\".",
+    "sha256Imagen": "2f70c758b15cfded6c99956d55c5bb247dea3616431011796f06ddae05387e42",
+    "sha256DocumentoOrigen": "5d62a2ccd91b218d81cfc6b2b3d2779406dfb99a83ea4cc3d5955a01ffe50ec6",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S04-17.png",
+    "documento": "Evidencias_S04_SuarezVigoJatniel.docx",
+    "leyenda": "Figura 14. Respuesta 201 Created: venta id 21, total 84, subtotales 54 y 30 respectivamente.",
+    "sha256Imagen": "2db31693e435deb35504413d29a9202bc2a4268df84bcbff0a6a92cda88224f6",
+    "sha256DocumentoOrigen": "5d62a2ccd91b218d81cfc6b2b3d2779406dfb99a83ea4cc3d5955a01ffe50ec6",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S04-20.png",
+    "documento": "Evidencias_S04_SuarezVigoJatniel.docx",
+    "leyenda": "Figura 17. Stock antes: Producto 21 = 57 (ya se había descontado 3 unidades en la Prueba 5), Producto 22 = 38.",
+    "sha256Imagen": "68d523c987a4042cad1fe35a9ee3346cf17271c7c715ce348d2ff97b38342398",
+    "sha256DocumentoOrigen": "5d62a2ccd91b218d81cfc6b2b3d2779406dfb99a83ea4cc3d5955a01ffe50ec6",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S04-22.png",
+    "documento": "Evidencias_S04_SuarezVigoJatniel.docx",
+    "leyenda": "Figura 19. Respuesta 409 Conflict: \"Stock insuficiente para Azitromicina 250mg. Disponible: 38, solicitado: 1000\".",
+    "sha256Imagen": "a3700f14c7e12862a71fee5dff96897308c0f629eaaab1cb876524f109ec952a",
+    "sha256DocumentoOrigen": "5d62a2ccd91b218d81cfc6b2b3d2779406dfb99a83ea4cc3d5955a01ffe50ec6",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S04-23.png",
+    "documento": "Evidencias_S04_SuarezVigoJatniel.docx",
+    "leyenda": "Figura 20. Stock después: Producto 21 sigue en 57 y Producto 22 sigue en 38. No hubo cambios.",
+    "sha256Imagen": "c859000f57b65dc352fa8785bf29d5a17e2ab5ff8e85122ca36a42a7fd35644a",
+    "sha256DocumentoOrigen": "5d62a2ccd91b218d81cfc6b2b3d2779406dfb99a83ea4cc3d5955a01ffe50ec6",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S05-01.png",
+    "documento": "evidencias-s5.docx",
+    "leyenda": "Figura 1. Lista de endpoints del venta-controller, incluyendo /buscar y /{id}/anular.",
+    "sha256Imagen": "3cf6ea9623f31efd968cf6eab02d5ee9e7d2e2d430fb8c42ba7a75ea2ae8d210",
+    "sha256DocumentoOrigen": "5042178a3c871fdb0b0699f7b4034ef172c493c7db8f5b11e9fe779b4e7d1dec",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S05-14.png",
+    "documento": "evidencias-s5.docx",
+    "leyenda": "Figura 8. Reporte ventas-por-categoria antes de anular: Antibioticos 5 u. / S/88.50, Vitaminas 4 u. / S/65.00.",
+    "sha256Imagen": "46d42936201bf880aefa959141d7a7aa51ab6090afaa3a7ab9bee17157e822d9",
+    "sha256DocumentoOrigen": "5042178a3c871fdb0b0699f7b4034ef172c493c7db8f5b11e9fe779b4e7d1dec",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S05-18.png",
+    "documento": "evidencias-s5.docx",
+    "leyenda": "Figura 11. Reporte ventas-por-categoria después de anular la venta 43.",
+    "sha256Imagen": "141d1f29ae178c0f53e14bd53562d3f9d4e3dcd4d5d0b7d559822bd9429c2e8f",
+    "sha256DocumentoOrigen": "5042178a3c871fdb0b0699f7b4034ef172c493c7db8f5b11e9fe779b4e7d1dec",
+    "recuperada": "2026-11-15"
+  },
+  {
+    "archivo": "S05-23.png",
+    "documento": "evidencias-s5.docx",
+    "leyenda": "Figura 15. Log del reporte productos-mas-vendidos ejecutado después de anular (filas=3, duracionMs=6).",
+    "sha256Imagen": "a0f96762d32eacc548ae8e92ace3c9335074dd3a29fc826eec04794d45de86e7",
+    "sha256DocumentoOrigen": "5042178a3c871fdb0b0699f7b4034ef172c493c7db8f5b11e9fe779b4e7d1dec",
+    "recuperada": "2026-11-15"
+  }
+]

@@ -3,6 +3,8 @@ package pe.edu.pe.PharmaBackend.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisher;
+import pe.edu.pe.PharmaBackend.auditoria.EventoAuditoria;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.pe.PharmaBackend.dto.ClienteRequestDTO;
 import pe.edu.pe.PharmaBackend.dto.ClienteResponseDTO;
@@ -22,10 +24,12 @@ public class ClienteServiceImpl
             LoggerFactory.getLogger(ClienteServiceImpl.class);
 
     private final ClienteRepository clienteRepository;
+    private final ApplicationEventPublisher eventos;
 
     public ClienteServiceImpl(
-            ClienteRepository clienteRepository) {
+            ClienteRepository clienteRepository, ApplicationEventPublisher eventos) {
         this.clienteRepository = clienteRepository;
+        this.eventos = eventos;
     }
 
     @Override
@@ -33,10 +37,7 @@ public class ClienteServiceImpl
     public ClienteResponseDTO create(
             ClienteRequestDTO request) {
 
-        log.info(
-                "Registrando cliente con DNI={}",
-                request.getDni()
-        );
+        log.info("Registrando cliente");
 
         String dni = request.getDni().trim();
         String email = request.getEmail()
@@ -76,7 +77,9 @@ public class ClienteServiceImpl
         cliente.setEstado(request.getEstado());
 
         Cliente guardado =
-                clienteRepository.save(cliente);
+                clienteRepository.saveAndFlush(cliente);
+        eventos.publishEvent(EventoAuditoria.de("CLIENTE_REGISTRADO", "Cliente",
+                guardado.getId(), "Alta de cliente; estado=" + guardado.getEstado()));
 
         log.info(
                 "Cliente registrado correctamente id={}",
@@ -173,7 +176,7 @@ public class ClienteServiceImpl
         cliente.setEstado(request.getEstado());
 
         Cliente actualizado =
-                clienteRepository.save(cliente);
+                clienteRepository.saveAndFlush(cliente);
 
         log.info(
                 "Cliente id={} actualizado correctamente",
@@ -207,6 +210,8 @@ public class ClienteServiceImpl
             Cliente cliente) {
 
         return new ClienteResponseDTO(
+                cliente.getCreadoPor(),
+                cliente.getModificadoPor(),
                 cliente.getId(),
                 cliente.getDni(),
                 cliente.getNombres(),

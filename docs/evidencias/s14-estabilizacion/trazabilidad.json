@@ -1,0 +1,19 @@
+{
+  "fecha": "2026-11-15T18:07:11.759098-05:00",
+  "consulta": "ventas JOIN auditoria_eventos WHERE ventas.id=22430",
+  "resultado": {
+    "ventaId": 22430,
+    "creadoPor": "vendedor",
+    "total": 10,
+    "accion": "VENTA_REGISTRADA",
+    "usuario": "vendedor",
+    "requestId": "bc8e15d3",
+    "eventoId": 311
+  },
+  "log": [
+    "17:56:45.589 INFO  [bc8e15d3] p.e.p.P.s.impl.VentaServiceImpl - Inicio de registro de venta. clienteId=90, cantidadDetalles=1",
+    "17:56:45.595 INFO  [bc8e15d3] p.e.p.P.s.impl.VentaServiceImpl - Procesando producto. productoId=22434, cantidadSolicitada=1",
+    "17:56:45.613 INFO  [bc8e15d3] p.e.p.P.s.impl.VentaServiceImpl - Venta registrada con éxito. ventaId=22430, total=10",
+    "17:56:45.649 INFO  [bc8e15d3] p.e.p.P.config.RequestIdFilter - POST /api/v1/ventas -> 201 (73 ms)"
+  ]
+}

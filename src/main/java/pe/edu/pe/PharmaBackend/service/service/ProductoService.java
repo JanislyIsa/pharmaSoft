@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductoService extends CrudService<ProductoRequestDTO, ProductoResponseDTO, Long> {
     PaginaResponseDTO<ProductoResponseDTO> listar(Pageable pageable);
+    PaginaResponseDTO<ProductoResponseDTO> buscarVendibles(String texto, Pageable pageable);
 }

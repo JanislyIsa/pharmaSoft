@@ -3,6 +3,7 @@ package pe.edu.pe.PharmaBackend.reportes.service;
 import org.springframework.stereotype.Service;
 import pe.edu.pe.PharmaBackend.exception.ReglaNegocioException;
 import pe.edu.pe.PharmaBackend.reportes.dto.VentaPorCategoriaDTO;
+import pe.edu.pe.PharmaBackend.reportes.dto.ProductoMasVendidoDTO;
 import pe.edu.pe.PharmaBackend.reportes.repository.ReporteVentasRepository;
 
 import java.time.LocalDate;
@@ -28,6 +29,17 @@ public class ReporteVentasService {
                 .map(row -> new VentaPorCategoriaDTO(
                         row.getCategoriaId(),
                         row.getCategoriaNombre(),
+                        row.getCantidadVendida(),
+                        row.getMontoTotal()))
+                .toList();
+    }
+
+    public List<ProductoMasVendidoDTO> productosMasVendidos() {
+        return repository.productosMasVendidos()
+                .stream()
+                .map(row -> new ProductoMasVendidoDTO(
+                        row.getProductoId(),
+                        row.getProductoNombre(),
                         row.getCantidadVendida(),
                         row.getMontoTotal()))
                 .toList();

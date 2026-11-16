@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import pe.edu.pe.PharmaBackend.exception.dto.ErrorResponseDTO;
 
@@ -23,7 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponseDTO> handleAuthentication(AuthenticationException ex, HttpServletRequest request) {
         ErrorResponseDTO error = new ErrorResponseDTO(LocalDateTime.now(), 401, "Unauthorized",
-                "Usuario o contraseña incorrectos", request.getRequestURI(), null);
+                "Usuario o contraseña incorrectos", request.getRequestURI(), null, MDC.get("requestId"));
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
@@ -31,7 +32,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
         log.warn("Acceso denegado en {}", request.getRequestURI());
         ErrorResponseDTO error = new ErrorResponseDTO(LocalDateTime.now(), 403, "Forbidden",
-                "No tiene permisos para realizar esta operación", request.getRequestURI(), null);
+                "No tiene permisos para realizar esta operación", request.getRequestURI(), null, MDC.get("requestId"));
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
@@ -50,7 +51,8 @@ public class GlobalExceptionHandler {
                 "Not Found",
                 ex.getMessage(),
                 request.getRequestURI(),
-                null
+                null,
+                MDC.get("requestId")
         );
 
         return ResponseEntity
@@ -74,7 +76,8 @@ public class GlobalExceptionHandler {
                 "Conflict",
                 ex.getMessage(),
                 request.getRequestURI(),
-                null
+                null,
+                MDC.get("requestId")
         );
 
         return ResponseEntity
@@ -110,7 +113,8 @@ public class GlobalExceptionHandler {
                 "Bad Request",
                 "Existen errores de validación",
                 request.getRequestURI(),
-                validationErrors
+                validationErrors,
+                MDC.get("requestId")
         );
 
         return ResponseEntity

@@ -51,12 +51,12 @@ public class VentaController {
             @RequestParam(required = false) LocalDate desde,
             @RequestParam(required = false) LocalDate hasta,
             @RequestParam(defaultValue = "0") int pagina,
-            @RequestParam(defaultValue = "10") int tamanio,
+            @RequestParam(defaultValue = "20") int tamanio,
             @RequestParam(defaultValue = "fecha") String ordenarPor,
             @RequestParam(defaultValue = "desc") String direccion) {
 
-        if (pagina < 0 || tamanio < 1) {
-            throw new ReglaNegocioException("La página debe ser mayor o igual a 0 y el tamaño mayor a 0.");
+        if (pagina < 0 || tamanio < 1 || tamanio > 100) {
+            throw new ReglaNegocioException("La página debe ser mayor o igual a 0 y el tamaño estar entre 1 y 100.");
         }
         if (desde != null && hasta != null && desde.isAfter(hasta)) {
             throw new ReglaNegocioException("La fecha desde no puede ser posterior a la fecha hasta.");
